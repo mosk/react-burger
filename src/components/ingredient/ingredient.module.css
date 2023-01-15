@@ -1,0 +1,19 @@
+.image {
+	width: 100%;
+	max-width: 240px;
+	height: auto;
+}
+
+.name {
+	display: block;
+	width: 100%;
+	text-align: center;
+	order: 1;
+}
+
+.price {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
