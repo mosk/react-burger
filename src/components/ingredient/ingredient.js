@@ -12,10 +12,10 @@ const Ingredient = ({data}) => {
 				<span className="text text_type_digits-default">{data.price}&nbsp;</span>
 				<CurrencyIcon type="primary" />
 			</p>
-			<p className={`${styles.amount} mb-1`}>
+			<div className={`${styles.amount} mb-1`}>
 				<span className="visually-hidden">Количество: </span>
 				<Counter count={1} size="default" extraClass="m-1" />
-			</p>
+			</div>
 		</>
 	);
 }

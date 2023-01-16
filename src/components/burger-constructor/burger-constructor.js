@@ -11,7 +11,7 @@ const BurgerConstructor = ({data}) => {
 			<ul className={`${styles.list} mb-6 pt-25 pl-1 pr-1`}>
 				{	
 					data.map((item, i) => i === 0 ? 
-						<li className={`${styles.list__item} ml-3 mr-3 mb-4`}>
+						<li className={`${styles.list__item} ml-3 mr-3 mb-4`} key={item._id}>
 							<ConstructorElement 
 								isLocked={true}
 								type="top"	
@@ -21,7 +21,7 @@ const BurgerConstructor = ({data}) => {
 							/>
 						</li>
 						: i === (data.length - 1) ? 
-						<li className={`${styles.list__item} ml-3 mr-3 mb-4`}>
+						<li className={`${styles.list__item} ml-3 mr-3 mb-4`} key={item._id}>
 							<ConstructorElement 
 								type="bottom"
 								text={item.name}
@@ -30,7 +30,7 @@ const BurgerConstructor = ({data}) => {
 							/>
 						</li> 
 						: 
-						<li className={`${styles.list__item} ml-3 mr-3 mb-4`}>
+						<li className={`${styles.list__item} ml-3 mr-3 mb-4`} key={item._id}>
 							<ConstructorElement 
 								text={item.name}
 								price={item.price}
