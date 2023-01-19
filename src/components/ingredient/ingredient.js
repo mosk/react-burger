@@ -8,6 +8,7 @@ const Ingredient = ({ data }) => {
 	const [modalVisibility, setVisible] = React.useState(false);
 
 	const handleOpenModal = (e) => {
+		e.preventDefault();
 		setVisible(true);
 	}
 
@@ -21,7 +22,9 @@ const Ingredient = ({ data }) => {
 
 	return (
 		<>
-			<img src={data.image} alt={data.name} className={`${styles.image} mb-1`} onClick={handleOpenModal} />
+			<a href="/" onClick={handleOpenModal}>
+				<img src={data.image} alt={data.name} className={`${styles.image} mb-1`} />
+			</a>
 			<h3 className={`${styles.name} text text_type_main-small`}>
 				{data.name}
 			</h3>

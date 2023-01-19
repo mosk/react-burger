@@ -7,7 +7,7 @@ const Modal = (props) => {
 	const { onClose, item = false, modalTitle = `Детали ингредиента`, orderID = false } = props;
 
 	const handleClickModal = (e) => {
-		console.log(e.currentTarget);
+		e.stopPropagation();
 	};
 
 	return (
@@ -93,7 +93,7 @@ const Modal = (props) => {
 						</p>
 					</>
 				)}
-				<button className={`${styles['button--close']}`} onClose={onClose}>
+				<button className={`${styles['button--close']}`} onClick={onClose}>
 					<CloseIcon type="primary" />
 					<span className="visually-hidden">
 						Закрыть окно

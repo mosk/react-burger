@@ -35,6 +35,8 @@
 	justify-content: flex-end;
 	align-items: center;
 	width: 568px;
+	margin: 0 auto;
+	margin-bottom: 16px;
 }
 
 .list__item:last-of-type {

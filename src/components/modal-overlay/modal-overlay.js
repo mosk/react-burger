@@ -8,9 +8,29 @@ const modalRoot = document.getElementById("modals");
 
 const ModalOverlay = (props) => {
 	const { onClose } = props;
+	const KEY_NAME_ESC = `Escape`;
+	const KEY_EVENT_TYPE = `keyup`;
+
+	const handleCloseModal = (e) => {
+		onClose();
+	}
+
+	const handleEscKey = (e) => {
+		if (e.key === KEY_NAME_ESC) {
+			onClose();
+		}
+	}
+
+	React.useEffect(() => {
+		document.addEventListener(KEY_EVENT_TYPE, handleEscKey);
+		
+		return () => {
+			document.removeEventListener(KEY_EVENT_TYPE, handleEscKey);
+		};
+	}, []);
 
 	return ReactDOM.createPortal(
-		<div className={`${styles.overlay}`} onClick={onClose}>
+		<div className={`${styles.overlay}`} onClick={handleCloseModal}>
 			<Modal onClose={onClose} {...props} />
 		</div>,
 		modalRoot

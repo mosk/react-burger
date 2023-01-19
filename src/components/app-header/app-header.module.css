@@ -62,3 +62,36 @@
 .button--secondary span {
 	color: #8585AD;
 }
+
+@media (max-width: 1280px) {
+	.header {
+		flex-wrap: wrap;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.header > * {
+		order: unset;
+	}
+	.logo {
+		width: 100%;
+		text-align: center;
+	}
+	.nav {
+		width: 58%;
+		justify-content: flex-end;
+	}
+	.nav--user {
+		width: 42%;
+		justify-content: flex-start;
+	}
+}
+
+@media (max-width: 720px) {
+	.nav {
+		flex-wrap: wrap;
+		width: 100%;
+	}
+	.nav > * {
+		width: 100%;
+	}
+}
