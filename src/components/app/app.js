@@ -1,13 +1,13 @@
-import React from 'react';
-import styles from './app.module.css';
+import React from "react";
+import styles from "./app.module.css";
 
-import ErrorBoundary from '../../utils/error-boundary';
+import ErrorBoundary from "../../utils/error-boundary";
 
-import AppHeader from '../app-header/app-header';
-import BurgerIngridients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
+import AppHeader from "../app-header/app-header";
+import BurgerIngridients from "../burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
 
-import getDataFromApi from '../../utils/burger-api';
+import getDataFromApi from "../../utils/burger-api";
 
 const App = () => {
   const [isLoading, setLoading] = React.useState(false);
@@ -22,7 +22,7 @@ const App = () => {
 
       setIngredients(newIngredients);
       setLoading(false);
-    }
+    };
 
     getIngredients();
   }, []);
@@ -32,7 +32,7 @@ const App = () => {
       <ErrorBoundary>
         <AppHeader />
         <main className={styles.main}>
-          { !isLoading && (
+          {!isLoading && (
             <>
               <BurgerIngridients data={ingredients} />
               <BurgerConstructor data={ingredients} />
@@ -42,6 +42,6 @@ const App = () => {
       </ErrorBoundary>
     </div>
   );
-}
+};
 
 export default App;
