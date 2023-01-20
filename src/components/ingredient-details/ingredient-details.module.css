@@ -1,0 +1,29 @@
+.image {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+}
+
+.table {
+  display: block;
+  margin: 0;
+  margin-bottom: 60px;
+  padding: 0;
+}
+
+.table__header,
+.table__body {
+  margin: 0;
+  padding: 0;
+}
+
+.table__body tr:last-of-type td {
+  padding-bottom: 0;
+}
+
+.table__td,
+.table__th {
+  margin: 0;
+  padding: 0 10px 8px;
+  text-align: center;
+}

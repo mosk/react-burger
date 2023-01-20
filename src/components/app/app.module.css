@@ -1,0 +1,28 @@
+/* .app {
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+} */
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+main > * {
+  width: 50%;
+}
+
+@media (max-width: 1280px) {
+  .main {
+    flex-wrap: wrap;
+  }
+
+  .main > * {
+    width: 100%;
+  }
+}
