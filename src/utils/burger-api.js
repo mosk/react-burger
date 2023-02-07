@@ -1,6 +1,6 @@
 const NORMA_API = `https://norma.nomoreparties.space/api`;
 
-const getData = (dataName) => {
+export const getData = (dataName = `ingredients`) => {
   return fetch(`${NORMA_API}/${dataName}`)
     .then((res) => res.json())
     .then((data) => {
@@ -9,5 +9,3 @@ const getData = (dataName) => {
     })
     .catch(() => alert("Во время загрузки ингредиентов произошла ошибка."));
 };
-
-export default getData;
