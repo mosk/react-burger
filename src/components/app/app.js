@@ -8,13 +8,11 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngridients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 
-// import getDataFromApi from "../../utils/burger-api";
-
 import { getItems } from "../../services/actions/ingredients";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { items, itemsRequest, itemsFailed } = useSelector(store => store.ingredients);
+  const { items, itemsRequest, itemsFailed } = useSelector(store => store.items);
 
   React.useEffect(() => {
     dispatch(getItems());

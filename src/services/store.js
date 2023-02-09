@@ -4,18 +4,11 @@ import reducer from './reducers/index';
 // import { customEnhancer } from './enhancers';
 
 const initialState = {
-	ingredients: [],
-	ingredientsUsedList: [],
-	ingredientCurrent: {},
+	items: [],
+	itemsInConstructor: [],
+	itemCurrent: {},
 	order: {}
 };
-
-// const initialState = {
-// 	items: [],
-// 	ingredientsUsedList: [],
-// 	ingredientCurrent: {},
-// 	order: {}
-// };
 
 const store = configureStore({
 	reducer,

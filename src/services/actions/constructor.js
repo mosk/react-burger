@@ -1,4 +1,4 @@
-// uuid v4
+import { v4 as uuid } from 'uuid';
 
 export const CONSTRUCTOR_ADD = 'CONSTRUCTOR_ADD';
 export const CONSTRUCTOR_DELETE = 'CONSTRUCTOR_DELETE';
@@ -10,7 +10,7 @@ export const addToConstructor = (item) => {
 		type: CONSTRUCTOR_ADD,
 		payload: {
 			...item,
-			id: 1
+			id: uuid()
 		}
 	}
 }

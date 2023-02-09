@@ -39,6 +39,18 @@
   margin-bottom: 16px;
 }
 
+.empty .constructor-element__row > *:not(.constructor-element__text) {
+  display: none;
+}
+
+.empty .constructor-element__row .constructor-element__text {
+  align-items: center;
+}
+
+.empty  {
+  border: 1px solid red;
+}
+
 .list__item:last-of-type {
   margin-bottom: 0;
 }
