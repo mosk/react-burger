@@ -1,8 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import styles from "./app.module.css";
-
 import ErrorBoundary from "../../utils/error-boundary";
+
+import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+import styles from "./app.module.css";
 
 import AppHeader from "../app-header/app-header";
 import BurgerIngridients from "../burger-ingredients/burger-ingredients";
@@ -22,14 +25,16 @@ const App = () => {
     <div className="App">
       <ErrorBoundary>
         <AppHeader />
-        <main className={styles.main}>
-          {!itemsRequest && !itemsFailed && (
-            <>
-              <BurgerIngridients data={items} />
-              <BurgerConstructor data={items} />
-            </>
-          )}
-        </main>
+        <DndProvider backend={HTML5Backend}>
+          <main className={styles.main}>
+            {!itemsRequest && !itemsFailed && (
+              <>
+                <BurgerIngridients data={items} />
+                <BurgerConstructor/>
+              </>
+            )}
+          </main>
+        </DndProvider>
       </ErrorBoundary>
     </div>
   );

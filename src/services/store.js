@@ -6,7 +6,7 @@ import reducer from './reducers/index';
 const initialState = {
 	items: [],
 	itemsInConstructor: [],
-	itemCurrent: {},
+	itemInModal: {},
 	order: {}
 };
 

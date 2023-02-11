@@ -1,5 +1,7 @@
-import React, { useMemo } from "react";
-import { useSelector } from 'react-redux';
+import { useState, useMemo } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop, useDrag } from "react-dnd";
+
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -8,25 +10,65 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderId from "../order-id/order-id";
-import PropTypes from "prop-types";
-import { TYPE_INGREDIENT } from "../../utils/prop-types";
+import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
+
+import { addToConstructor } from "../../services/actions/constructor";
+import { ORDER_ADD } from "../../services/actions/order";
 
 // RIGHT
-const BurgerConstructor = ({ data }) => {
-  const [modalVisibility, setVisible] = React.useState(false);
-  const [ingredientInModal, setIngredientInModal] = React.useState(false);
+const BurgerConstructor = () => {
+  const [modalVisibility, setVisible] = useState(false);
 
-  const items = useSelector(store => store.itemsInConstructor)
+  const items = useSelector(store => store.itemsInConstructor);
+  const dispatch = useDispatch();
 
+  // dnd
+  // const handleDrop = (itemId) => {
+  //   console.log(itemId);
+  // };
+
+  // dnd – from ings to constructor
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: ['bun', 'main', 'sauce'],
+    drop: (item) => {
+      dispatch(addToConstructor(item));
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    })
+  });
+
+  // dnd – move inside constructor
+  const [, dropTargetList] = useDrop({
+    accept: 'constructorItem',
+    drop: (item) => {
+      console.log(item);
+      getDistance();
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    })
+  });
+
+  const getDistance = () => {
+    const listHeight = document.querySelector(`.${styles.list}`).offsetHeight;
+    const elHeight = document.querySelector(`.${styles.list} > *`).offsetHeight;
+
+    
+
+    console.log(listHeight, elHeight);
+  };
+
+  // modal
   const handleOpenModal = (e) => {
     e.preventDefault();
-    setIngredientInModal({
-      calories: data.calories,
-      carbohydrates: data.carbohydrates,
-      fat: data.fat,
-      image_large: data.image_large,
-      name: data.name,
-      proteins: data.proteins,
+    dispatch({
+      type: ORDER_ADD,
+      payload: {
+        id: getOrderID(),
+        ingredients: items,
+        price: getPrice
+      }
     });
     setVisible(true);
   };
@@ -35,6 +77,7 @@ const BurgerConstructor = ({ data }) => {
     setVisible(false);
   };
 
+  // order & price
   const getOrderID = () => {
     return 9999999;
   };
@@ -48,28 +91,19 @@ const BurgerConstructor = ({ data }) => {
 
   const getIngredients = () => {
     const res = items.ingredients.map((item, i) => (
-      <li className={`${styles.list__item} ml-3 mr-3 mb-4`} key={item._id}>
-        <ConstructorElement
-          text={item.name}
-          price={item.price}
-          thumbnail={item.image}
-        />
-      </li>
+      <BurgerConstructorItem {...item} key={item.id} />
     ));
 
     return res;
   };
 
   return (
-    <section className={`${styles.section} ml-5 mr-5 pt-25`}>
+    <section className={`${styles.section} ml-5 mr-5 pt-25`} ref={dropTarget}>
       <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">
         Состав бургера
       </h2>
       { items.bun ? (
-          <div 
-            className={`${styles["ingredient-top"]} mb-4`} 
-            key={items.bun._id}
-          >
+          <div className={`${styles['ingredient-top']} mb-4`}>
             <ConstructorElement
               text={items.bun.name}
               price={items.bun.price}
@@ -79,30 +113,30 @@ const BurgerConstructor = ({ data }) => {
             />
           </div>
         ) : (
-          <div className={`${styles['ingredient-top']} ${styles.empty} mb-4`}>
-            <ConstructorElement
-              text="Место для верхней булки"
-              type="top"
-            />
+          <div className={`${styles['ingredient-top']} ${styles.empty} ${isHover ? styles.hover : ''} mb-4`}>
+            <span className="text text_type_main-small">
+              Место для верхней булки
+            </span>
           </div>
         ) 
       }
       <div className={`${styles.wrapper} custom-scroll`}>
-        <ul className={`${styles.list} mb-4`}>
-          { items.ingredients.length > 0 ? getIngredients() : (
-            <li className={`${styles.list__item} ${styles.empty} ml-3 mr-3 mb-4`}>
-              <ConstructorElement
-                text="Место для начинки"
-              />
-            </li>
-          ) }
+        { items.ingredients.length <= 0 &&
+          <div 
+            className={`${styles['ingredient-middle']} ${styles.empty} ${isHover ? styles.hover : ''} mb-4`}
+          >
+            <span className="text text_type_main-small">
+              Место для начинки
+            </span>
+          </div>
+        }
+
+        <ul className={`${styles.list} mb-4`} ref={dropTargetList}>
+          { items.ingredients.length > 0 && getIngredients() }
         </ul>
       </div>
       { items.bun ? (
-          <div 
-            className={`${styles['ingredient-bottom']} mb-4`} 
-            key={items.bun._id}
-          >
+          <div className={`${styles['ingredient-bottom']} mb-4`}>
             <ConstructorElement
               text={items.bun.name}
               price={items.bun.price}
@@ -112,11 +146,10 @@ const BurgerConstructor = ({ data }) => {
             />
           </div>
         ) : (
-          <div className={`${styles['ingredient-bottom']} ${styles.empty} mb-4`}>
-            <ConstructorElement
-              text="Место для нижней булки"
-              type="bottom"
-            />
+          <div className={`${styles['ingredient-bottom']} ${styles.empty} ${isHover ? styles.hover : ''} mb-4`}>
+            <span className="text text_type_main-small">
+              Место для нижней булки
+            </span>
           </div>
         ) 
       }
@@ -134,23 +167,18 @@ const BurgerConstructor = ({ data }) => {
           type="primary"
           size="large"
           onClick={handleOpenModal}
-          disabled={getPrice > 0 ? false : true}
+          disabled={items.bun ? false : true}
         >
           Оформить заказ
         </Button>
-        {ingredientInModal && modalVisibility && (
+        { modalVisibility && 
           <Modal onClose={handleCloseModal} title="">
-            <OrderId id={getOrderID()} />
+            <OrderId/>
           </Modal>
-        )}
+        }
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape(TYPE_INGREDIENT).isRequired)
-    .isRequired,
 };
 
 export default BurgerConstructor;

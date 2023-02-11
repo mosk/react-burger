@@ -17,10 +17,7 @@
 .list__item {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  align-items: center;
+  flex-wrap: nowrap;
   position: relative;
-  list-style-type: none;
-  width: 50%;
-  max-width: 272px;
 }

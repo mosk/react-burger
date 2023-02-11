@@ -28,7 +28,7 @@ export const constructorReducer = (state = initialState, action) => {
 			}
 		}
 		case CONSTRUCTOR_DELETE: {
-			if (action.item.type === 'bun') {
+			if (action.payload.type === 'bun') {
 				return {
 					...state,
 					bun: {}
@@ -40,7 +40,10 @@ export const constructorReducer = (state = initialState, action) => {
 			}
 		}
 		case CONSTRUCTOR_REORDER: {
-			return state;
+			return {
+				...state,
+				ingredients: [...state.ingredients.filter((item) => item.id !== action.payload.id)]
+			};
 		}
 		default: {
 			return state;
