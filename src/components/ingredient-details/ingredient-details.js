@@ -1,16 +1,10 @@
 import styles from "./ingredient-details.module.css";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 const IngredientDetails = () => {
-  const {
-    image_large, 
-    name, 
-    calories, 
-    proteins, 
-    fat, 
-    carbohydrates 
-   } = useSelector(store => store.itemInModal);
+  const { image_large, name, calories, proteins, fat, carbohydrates } =
+    useSelector((store) => store.itemInModal);
 
   return (
     <>

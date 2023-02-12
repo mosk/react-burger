@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useState, useMemo, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 import styles from "./burger-ingredients.module.css";
 
@@ -12,39 +12,37 @@ import { TYPE_INGREDIENT } from "../../utils/prop-types";
 // LEFT
 const BurgerIngredients = ({ data }) => {
   // tabs
-  const [currentTab, setCurrentTab] = useState('bun');
+  const [currentTab, setCurrentTab] = useState("bun");
 
   const [bunsRef, inViewBuns] = useInView({
-    threshold: 0
+    threshold: 0,
   });
   const [saucesRef, inViewSauces] = useInView({
-    threshold: 0
+    threshold: 0,
   });
   const [mainsRef, inViewMains] = useInView({
-    threshold: 0
+    threshold: 0,
   });
 
   useEffect(() => {
     if (inViewBuns) {
-      setCurrentTab('bun');
+      setCurrentTab("bun");
     } else if (inViewSauces) {
-      setCurrentTab('sauce');
+      setCurrentTab("sauce");
     } else if (inViewMains) {
-      setCurrentTab('main');
+      setCurrentTab("main");
     }
-  }, [inViewBuns, inViewSauces, inViewMains])
+  }, [inViewBuns, inViewSauces, inViewMains]);
 
   // ingredients data
   const buns = useMemo(() => {
-    const bunsList = data.filter((item) => item.type === "bun")
+    const bunsList = data
+      .filter((item) => item.type === "bun")
       .map((item, i) => (
-        <li
-          className={`${styles.list__item} ml-3 mr-3 mb-10`}
-          key={item._id}
-        >
+        <li className={`${styles.list__item} ml-3 mr-3 mb-10`} key={item._id}>
           <Ingredient data={item} />
         </li>
-      ))
+      ));
 
     return bunsList;
   }, [data]);
@@ -53,13 +51,10 @@ const BurgerIngredients = ({ data }) => {
     const saucesList = data
       .filter((item) => item.type === "sauce")
       .map((item) => (
-        <li
-          className={`${styles.list__item} ml-3 mr-3 mb-10`}
-          key={item._id}
-        >
+        <li className={`${styles.list__item} ml-3 mr-3 mb-10`} key={item._id}>
           <Ingredient data={item} />
         </li>
-      ))
+      ));
 
     return saucesList;
   }, [data]);
@@ -68,13 +63,10 @@ const BurgerIngredients = ({ data }) => {
     const mainsList = data
       .filter((item) => item.type === "main")
       .map((item) => (
-        <li
-          className={`${styles.list__item} ml-3 mr-3 mb-10`}
-          key={item._id}
-        >
+        <li className={`${styles.list__item} ml-3 mr-3 mb-10`} key={item._id}>
           <Ingredient data={item} />
         </li>
-      ))
+      ));
 
     return mainsList;
   }, [data]);

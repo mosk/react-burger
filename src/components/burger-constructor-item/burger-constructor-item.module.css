@@ -21,7 +21,7 @@
   transition: box-shadow 1.2s;
 }
 
-.dragged {
+/* .dragged {
   opacity: 0.05;
   transition: opacity 1.2s;
-}
+} */

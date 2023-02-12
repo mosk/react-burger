@@ -1,7 +1,7 @@
 import React from "react";
 import ErrorBoundary from "../../utils/error-boundary";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -15,7 +15,9 @@ import { getItems } from "../../services/actions/ingredients";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { items, itemsRequest, itemsFailed } = useSelector(store => store.items);
+  const { items, itemsRequest, itemsFailed } = useSelector(
+    (store) => store.items
+  );
 
   React.useEffect(() => {
     dispatch(getItems());
@@ -30,7 +32,7 @@ const App = () => {
             {!itemsRequest && !itemsFailed && (
               <>
                 <BurgerIngridients data={items} />
-                <BurgerConstructor/>
+                <BurgerConstructor />
               </>
             )}
           </main>

@@ -1,10 +1,13 @@
 import styles from "./order-id.module.css";
-import { CheckMarkIcon, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  CheckMarkIcon,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const OrderId = () => {
-  const { ID, list, price } = useSelector(store => store.order);
+  const { ID, list, price } = useSelector((store) => store.order);
 
   // const ings = [list.bun, list.bun, ...list.ingredients];
   // const ingsNames = ings.map((ing) => ing.name);
@@ -32,8 +35,10 @@ const OrderId = () => {
       </p>
       <p className="text text_type_main-default mb-2">
         Цена:&nbsp;
-        <span className="text text_type_digits-default">{price}&nbsp;</span> 
-        <span style={{verticalAlign: 'middle'}}><CurrencyIcon type="primary" /></span>
+        <span className="text text_type_digits-default">{price}&nbsp;</span>
+        <span style={{ verticalAlign: "middle" }}>
+          <CurrencyIcon type="primary" />
+        </span>
       </p>
       <p className="text text_type_main-default text_color_inactive mb-20">
         Дождитесь готовности на&nbsp;орбитальной станции

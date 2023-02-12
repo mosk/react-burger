@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { useDrop, useDrag } from "react-dnd";
 
 import styles from "./burger-constructor.module.css";
@@ -10,7 +10,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderId from "../order-id/order-id";
-import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 
 import { addToConstructor } from "../../services/actions/constructor";
 import { ORDER_ADD } from "../../services/actions/order";
@@ -19,7 +19,7 @@ import { ORDER_ADD } from "../../services/actions/order";
 const BurgerConstructor = () => {
   const [modalVisibility, setVisible] = useState(false);
 
-  const items = useSelector(store => store.itemsInConstructor);
+  const items = useSelector((store) => store.itemsInConstructor);
   const dispatch = useDispatch();
 
   // dnd
@@ -29,32 +29,30 @@ const BurgerConstructor = () => {
 
   // dnd – from ings to constructor
   const [{ isHover }, dropTarget] = useDrop({
-    accept: ['bun', 'main', 'sauce'],
+    accept: ["bun", "main", "sauce"],
     drop: (item) => {
       dispatch(addToConstructor(item));
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isHover: monitor.isOver(),
-    })
+    }),
   });
 
   // dnd – move inside constructor
   const [, dropTargetList] = useDrop({
-    accept: 'constructorItem',
+    accept: "constructorItem",
     drop: (item) => {
       console.log(item);
       getDistance();
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isHover: monitor.isOver(),
-    })
+    }),
   });
 
   const getDistance = () => {
     const listHeight = document.querySelector(`.${styles.list}`).offsetHeight;
     const elHeight = document.querySelector(`.${styles.list} > *`).offsetHeight;
-
-    
 
     console.log(listHeight, elHeight);
   };
@@ -67,8 +65,8 @@ const BurgerConstructor = () => {
       payload: {
         id: getOrderID(),
         ingredients: items,
-        price: getPrice
-      }
+        price: getPrice,
+      },
     });
     setVisible(true);
   };
@@ -84,7 +82,7 @@ const BurgerConstructor = () => {
 
   const getPrice = useMemo(() => {
     return (
-      ( items.bun ? items.bun.price * 2 : 0 ) +
+      (items.bun ? items.bun.price * 2 : 0) +
       items.ingredients.reduce((sum, item) => sum + item.price, 0)
     );
   }, [items]);
@@ -102,62 +100,70 @@ const BurgerConstructor = () => {
       <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">
         Состав бургера
       </h2>
-      { items.bun ? (
-          <div className={`${styles['ingredient-top']} mb-4`}>
-            <ConstructorElement
-              text={items.bun.name}
-              price={items.bun.price}
-              thumbnail={items.bun.image}
-              type="top"
-              isLocked={true}
-            />
-          </div>
-        ) : (
-          <div className={`${styles['ingredient-top']} ${styles.empty} ${isHover ? styles.hover : ''} mb-4`}>
-            <span className="text text_type_main-small">
-              Место для верхней булки
-            </span>
-          </div>
-        ) 
-      }
+      {items.bun ? (
+        <div className={`${styles["ingredient-top"]} mb-4`}>
+          <ConstructorElement
+            text={items.bun.name}
+            price={items.bun.price}
+            thumbnail={items.bun.image}
+            type="top"
+            isLocked={true}
+          />
+        </div>
+      ) : (
+        <div
+          className={`${styles["ingredient-top"]} ${styles.empty} ${
+            isHover ? styles.hover : ""
+          } mb-4`}
+        >
+          <span className="text text_type_main-small">
+            Место для верхней булки
+          </span>
+        </div>
+      )}
       <div className={`${styles.wrapper} custom-scroll`}>
-        { items.ingredients.length <= 0 &&
-          <div 
-            className={`${styles['ingredient-middle']} ${styles.empty} ${isHover ? styles.hover : ''} mb-4`}
+        {items.ingredients.length <= 0 && (
+          <div
+            className={`${styles["ingredient-middle"]} ${styles.empty} ${
+              isHover ? styles.hover : ""
+            } mb-4`}
           >
-            <span className="text text_type_main-small">
-              Место для начинки
-            </span>
+            <span className="text text_type_main-small">Место для начинки</span>
           </div>
-        }
+        )}
 
         <ul className={`${styles.list} mb-4`} ref={dropTargetList}>
-          { items.ingredients.length > 0 && getIngredients() }
+          {items.ingredients.length > 0 && getIngredients()}
         </ul>
       </div>
-      { items.bun ? (
-          <div className={`${styles['ingredient-bottom']} mb-4`}>
-            <ConstructorElement
-              text={items.bun.name}
-              price={items.bun.price}
-              thumbnail={items.bun.image}
-              type="bottom"
-              isLocked={true}
-            />
-          </div>
-        ) : (
-          <div className={`${styles['ingredient-bottom']} ${styles.empty} ${isHover ? styles.hover : ''} mb-4`}>
-            <span className="text text_type_main-small">
-              Место для нижней булки
-            </span>
-          </div>
-        ) 
-      }
+      {items.bun ? (
+        <div className={`${styles["ingredient-bottom"]} mb-4`}>
+          <ConstructorElement
+            text={items.bun.name}
+            price={items.bun.price}
+            thumbnail={items.bun.image}
+            type="bottom"
+            isLocked={true}
+          />
+        </div>
+      ) : (
+        <div
+          className={`${styles["ingredient-bottom"]} ${styles.empty} ${
+            isHover ? styles.hover : ""
+          } mb-4`}
+        >
+          <span className="text text_type_main-small">
+            Место для нижней булки
+          </span>
+        </div>
+      )}
       <div className={styles.order}>
         <p className={`${styles.price} mr-10`}>
-          { getPrice > 0 && (
+          {getPrice > 0 && (
             <>
-              <span className="text text_type_digits-default">{getPrice}&nbsp;</span>
+              <span className="text text_type_digits-default">
+                {getPrice}&nbsp;
+              </span>
               <CurrencyIcon type="primary" />
             </>
           )}
@@ -171,11 +177,11 @@ const BurgerConstructor = () => {
         >
           Оформить заказ
         </Button>
-        { modalVisibility && 
+        {modalVisibility && (
           <Modal onClose={handleCloseModal} title="">
-            <OrderId/>
+            <OrderId />
           </Modal>
-        }
+        )}
       </div>
     </section>
   );

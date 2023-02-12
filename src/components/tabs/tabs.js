@@ -3,7 +3,7 @@ import React from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
-const Tabs = ({setCurrentTab, currentTab}) => {
+const Tabs = ({ setCurrentTab, currentTab }) => {
   const tabClickHandler = (tab) => {
     setCurrentTab(tab);
 
@@ -11,8 +11,8 @@ const Tabs = ({setCurrentTab, currentTab}) => {
 
     if (element) {
       element.scrollIntoView({
-        behavior: 'smooth'
-      })
+        behavior: "smooth",
+      });
     }
   };
 
@@ -20,25 +20,25 @@ const Tabs = ({setCurrentTab, currentTab}) => {
     <div className="mb-10" style={{ display: "flex" }}>
       <Tab
         value="bun"
-        active={currentTab === 'bun'}
+        active={currentTab === "bun"}
         key={`bun`}
-        onClick={() => tabClickHandler('bun')}
+        onClick={() => tabClickHandler("bun")}
       >
         Булки
       </Tab>
       <Tab
         value="sauce"
-        active={currentTab === 'sauce'}
+        active={currentTab === "sauce"}
         key={`sauce`}
-        onClick={() => tabClickHandler('sauce')}
+        onClick={() => tabClickHandler("sauce")}
       >
         Соусы
       </Tab>
       <Tab
         value="main"
-        active={currentTab === 'main'}
+        active={currentTab === "main"}
         key={`main`}
-        onClick={() => tabClickHandler('main')}
+        onClick={() => tabClickHandler("main")}
       >
         Начинки
       </Tab>
@@ -48,7 +48,7 @@ const Tabs = ({setCurrentTab, currentTab}) => {
 
 Tabs.propTypes = {
   setCurrentTab: PropTypes.func.isRequired,
-  currentTab: PropTypes.string.isRequired
+  currentTab: PropTypes.string.isRequired,
 };
 
 export default Tabs;
