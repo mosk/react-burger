@@ -13,6 +13,7 @@ const TYPE_INGREDIENT = {
   type: PropTypes.oneOf(["bun", "sauce", "main"]).isRequired,
   __v: PropTypes.number,
   _id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 export { TYPE_INGREDIENT };

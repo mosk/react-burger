@@ -1,6 +1,5 @@
 import styles from "./ingredient-details.module.css";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 
 const IngredientDetails = () => {
   const { image_large, name, calories, proteins, fat, carbohydrates } =
@@ -84,17 +83,6 @@ const IngredientDetails = () => {
       </table>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  data: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    image_large: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-  }),
 };
 
 export default IngredientDetails;

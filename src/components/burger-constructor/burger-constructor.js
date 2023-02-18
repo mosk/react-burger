@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop } from "react-dnd";
 
 import styles from "./burger-constructor.module.css";
 import {
@@ -9,11 +9,11 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
-import OrderId from "../order-id/order-id";
+import OrderDetails from "../order-details/order-details";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 
 import { addToConstructor } from "../../services/actions/constructor";
-import { ORDER_ADD } from "../../services/actions/order";
+import { ORDER_REQUEST } from "../../services/actions/order";
 
 // RIGHT
 const BurgerConstructor = () => {
@@ -21,11 +21,6 @@ const BurgerConstructor = () => {
 
   const items = useSelector((store) => store.itemsInConstructor);
   const dispatch = useDispatch();
-
-  // dnd
-  // const handleDrop = (itemId) => {
-  //   console.log(itemId);
-  // };
 
   // dnd – from ings to constructor
   const [{ isHover }, dropTarget] = useDrop({
@@ -61,7 +56,7 @@ const BurgerConstructor = () => {
   const handleOpenModal = (e) => {
     e.preventDefault();
     dispatch({
-      type: ORDER_ADD,
+      type: ORDER_REQUEST,
       payload: {
         id: getOrderID(),
         ingredients: items,
@@ -89,7 +84,7 @@ const BurgerConstructor = () => {
 
   const getIngredients = () => {
     const res = items.ingredients.map((item, i) => (
-      <BurgerConstructorItem {...item} key={item.id} />
+      <BurgerConstructorItem ingredient={item} key={item.id} />
     ));
 
     return res;
@@ -103,7 +98,7 @@ const BurgerConstructor = () => {
       {items.bun ? (
         <div className={`${styles["ingredient-top"]} mb-4`}>
           <ConstructorElement
-            text={items.bun.name}
+            text={`${items.bun.name} (верх)`}
             price={items.bun.price}
             thumbnail={items.bun.image}
             type="top"
@@ -139,7 +134,7 @@ const BurgerConstructor = () => {
       {items.bun ? (
         <div className={`${styles["ingredient-bottom"]} mb-4`}>
           <ConstructorElement
-            text={items.bun.name}
+            text={`${items.bun.name} (низ)`}
             price={items.bun.price}
             thumbnail={items.bun.image}
             type="bottom"
@@ -179,7 +174,7 @@ const BurgerConstructor = () => {
         </Button>
         {modalVisibility && (
           <Modal onClose={handleCloseModal} title="">
-            <OrderId />
+            <OrderDetails />
           </Modal>
         )}
       </div>

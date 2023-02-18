@@ -44,30 +44,19 @@ export const constructorReducer = (state = initialState, action) => {
     case CONSTRUCTOR_REORDER: {
       const ingredients = [...state.ingredients];
 
-      if (ingredients.length > 1) {
-        const ings = ingredients
-          .map((ing, i) => {
-            const elementsIndex =
-              (ing.id === action.payload.to && i) ||
-              (ing.id === action.payload.from && i);
+      const draggedNumber = ingredients
+        .map((item, i) => item.id === action.payload.from ? i : null)
+        .filter(item => item !== null)[0];
+      const hoveredNumber = ingredients
+        .map((item, i) => item.id === action.payload.to ? i : null)
+        .filter(item => item !== null)[0];
 
-            if (elementsIndex > 0) {
-              return elementsIndex;
-            }
+      ingredients.splice(draggedNumber, 0, ingredients.splice(hoveredNumber, 1)[0]);
 
-            return false;
-          })
-          .filter((ing) => ing > 0);
-
-        ingredients.splice(ings[0], 0, ingredients.splice(ings[1], 1)[0]);
-
-        return {
-          ...state,
-          ingredients,
-        };
-      }
-
-      return state;
+      return {
+        ...state,
+        ingredients
+      };
     }
     default: {
       return state;

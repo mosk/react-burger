@@ -1,4 +1,4 @@
-import { getData } from "../../utils/burger-api";
+import { request } from "../../utils/burger-api";
 
 export const INGREDIENTS_REQUEST = "INGREDIENTS_REQUEST";
 export const INGREDIENTS_SUCCESS = "INGREDIENTS_SUCCESS";
@@ -8,11 +8,11 @@ export const getItems = () => (dispatch) => {
   dispatch({
     type: INGREDIENTS_REQUEST,
   });
-  return getData()
-    .then((items) => {
+  return request(`ingredients`)
+    .then((data) => {
       dispatch({
         type: INGREDIENTS_SUCCESS,
-        payload: items,
+        payload: data.data,
       });
     })
     .catch((err) => {

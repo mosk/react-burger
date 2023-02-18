@@ -1,0 +1,56 @@
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rolling {
+  0% {
+    left: 0;
+    bottom: -64px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    bottom: -32px;
+    opacity: 0;
+  }
+}
+
+.loader {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 64px;
+  padding: 0 32px;
+}
+
+.loader > svg {
+  position: absolute;
+  display: block;
+  bottom: -64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  animation: rolling 4s linear infinite, spin 1.8s linear infinite;
+}
+
+.loader > svg:first-child {
+  width: 48px;
+  height: 48px;
+  animation: rolling 3s linear infinite, spin 1.35s linear infinite;
+}
+
+.loader > svg:last-child {
+  width: 32px;
+  height: 32px;
+  animation: rolling 2s linear infinite, spin 0.675s linear infinite;
+}

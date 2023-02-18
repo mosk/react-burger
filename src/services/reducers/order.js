@@ -1,15 +1,33 @@
-import { ORDER_ADD } from "../actions/order";
+import { ORDER_REQUEST, ORDER_SUCCESS, ORDER_FAILED } from "../actions/order";
 
-const initialState = {};
+const initialState = {
+  orderID: null,
+  orderRequest: false,
+  orderFailed: false,
+};
 
 export const orderReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ORDER_ADD: {
+    case ORDER_REQUEST: {
       return {
         ...state,
-        ID: action.payload.id,
-        list: action.payload.ingredients,
-        price: action.payload.price,
+        orderRequest: true
+      };
+    }
+    case ORDER_SUCCESS: {
+      return {
+        ...state,
+        orderRequest: false,
+        orderFailed: false,
+        orderID: action.payload
+      };
+    }
+    case ORDER_FAILED: {
+      return {
+        ...state,
+        orderRequest: false,
+        orderFailed: true,
+        orderID: action.payload
       };
     }
     default: {
