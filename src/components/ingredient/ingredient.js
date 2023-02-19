@@ -96,8 +96,8 @@ const Ingredient = ({ data }) => {
 Ingredient.propTypes = {
   data: PropTypes.oneOfType([
     PropTypes.shape(TYPE_INGREDIENT).isRequired,
-    PropTypes.object
-  ]).isRequired
+    PropTypes.object,
+  ]).isRequired,
 };
 
 export default Ingredient;

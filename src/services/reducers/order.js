@@ -11,7 +11,7 @@ export const orderReducer = (state = initialState, action) => {
     case ORDER_REQUEST: {
       return {
         ...state,
-        orderRequest: true
+        orderRequest: true,
       };
     }
     case ORDER_SUCCESS: {
@@ -19,7 +19,7 @@ export const orderReducer = (state = initialState, action) => {
         ...state,
         orderRequest: false,
         orderFailed: false,
-        orderID: action.payload
+        orderID: action.payload,
       };
     }
     case ORDER_FAILED: {
@@ -27,7 +27,7 @@ export const orderReducer = (state = initialState, action) => {
         ...state,
         orderRequest: false,
         orderFailed: true,
-        orderID: action.payload
+        orderID: action.payload,
       };
     }
     default: {

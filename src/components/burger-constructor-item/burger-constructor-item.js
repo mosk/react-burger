@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import { TYPE_INGREDIENT } from "../../utils/prop-types";
 
 // RIGHT
-const BurgerConstructorItem = ({ingredient}) => {
+const BurgerConstructorItem = ({ ingredient }) => {
   const { id, name, price, image } = ingredient;
   const items = useSelector((store) => store.itemsInConstructor);
 
@@ -56,39 +56,9 @@ const BurgerConstructorItem = ({ingredient}) => {
       const dragId = item.id;
       const hoverId = id;
 
-      // const draggedNumber = items.ingredients
-      //   .map((item, i) => item.id === dragId ? i : null)
-      //   .filter(item => item !== null);
-      // const hoveredNumber = items.ingredients
-      //   .map((item, i) => item.id === hoverId ? i : null)
-      //   .filter(item => item !== null);
-
-      // console.log(draggedNumber[0], hoveredNumber[0]);
-
       if (dragId === hoverId) {
         return;
       }
-
-      // const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      // const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      // const clientOffset = monitor.getClientOffset();
-      // const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-      // if (draggedNumber[0] < hoveredNumber[0] && hoverClientY < hoverMiddleY) {
-      //   return;
-      // }
-
-      // if (draggedNumber[0] > hoveredNumber[0] && hoverClientY > hoverMiddleY) {
-      //   return;
-      // }
-
-      // dispatch({
-      //   type: CONSTRUCTOR_REORDER,
-      //   payload: {
-      //     from: draggedNumber[0],
-      //     to: hoveredNumber[0],
-      //   },
-      // });
 
       dispatch({
         type: CONSTRUCTOR_REORDER,
@@ -123,7 +93,7 @@ const BurgerConstructorItem = ({ingredient}) => {
 };
 
 BurgerConstructorItem.propTypes = {
-  ingredient: PropTypes.shape(TYPE_INGREDIENT).isRequired
-}
+  ingredient: PropTypes.shape(TYPE_INGREDIENT).isRequired,
+};
 
 export default BurgerConstructorItem;

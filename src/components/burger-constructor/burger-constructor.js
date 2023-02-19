@@ -12,13 +12,16 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 
-import { addToConstructor } from "../../services/actions/constructor";
+import {
+  addToConstructor,
+  CONSTRUCTOR_RESET,
+} from "../../services/actions/constructor";
 import { ORDER_REQUEST } from "../../services/actions/order";
 
 // RIGHT
 const BurgerConstructor = () => {
   const [modalVisibility, setVisible] = useState(false);
-
+  const { orderFailed } = useSelector((store) => store.order);
   const items = useSelector((store) => store.itemsInConstructor);
   const dispatch = useDispatch();
 
@@ -58,7 +61,6 @@ const BurgerConstructor = () => {
     dispatch({
       type: ORDER_REQUEST,
       payload: {
-        id: getOrderID(),
         ingredients: items,
         price: getPrice,
       },
@@ -68,11 +70,11 @@ const BurgerConstructor = () => {
 
   const handleCloseModal = (e) => {
     setVisible(false);
-  };
 
-  // order & price
-  const getOrderID = () => {
-    return 9999999;
+    !orderFailed &&
+      dispatch({
+        type: CONSTRUCTOR_RESET,
+      });
   };
 
   const getPrice = useMemo(() => {

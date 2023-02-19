@@ -45,17 +45,21 @@ export const constructorReducer = (state = initialState, action) => {
       const ingredients = [...state.ingredients];
 
       const draggedNumber = ingredients
-        .map((item, i) => item.id === action.payload.from ? i : null)
-        .filter(item => item !== null)[0];
+        .map((item, i) => (item.id === action.payload.from ? i : null))
+        .filter((item) => item !== null)[0];
       const hoveredNumber = ingredients
-        .map((item, i) => item.id === action.payload.to ? i : null)
-        .filter(item => item !== null)[0];
+        .map((item, i) => (item.id === action.payload.to ? i : null))
+        .filter((item) => item !== null)[0];
 
-      ingredients.splice(draggedNumber, 0, ingredients.splice(hoveredNumber, 1)[0]);
+      ingredients[hoveredNumber] = ingredients.splice(
+        draggedNumber,
+        1,
+        ingredients[hoveredNumber]
+      )[0];
 
       return {
         ...state,
-        ingredients
+        ingredients: ingredients,
       };
     }
     default: {

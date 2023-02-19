@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import styles from "./order-details.module.css";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,18 +9,22 @@ import { getOrderID } from "../../services/actions/order";
 // import { CONSTRUCTOR_RESET } from '../../services/actions/constructor';
 
 const OrderDetails = () => {
-  const { orderID, orderRequest, orderFailed } = useSelector((store) => store.order);
-  const { bun, ingredients } = useSelector((store) => store.itemsInConstructor)
+  const { orderID, orderRequest, orderFailed } = useSelector(
+    (store) => store.order
+  );
+  const { bun, ingredients } = useSelector((store) => store.itemsInConstructor);
   const dispatch = useDispatch();
 
   const getItemsID = (itemsList) => {
-    return itemsList.map(item => item._id);
+    return itemsList.map((item) => item._id);
   };
 
   React.useEffect(() => {
-    dispatch(getOrderID({
-      ingredients: [bun, bun, ...getItemsID(ingredients)]
-    }));
+    dispatch(
+      getOrderID({
+        ingredients: [bun, bun, ...getItemsID(ingredients)],
+      })
+    );
   }, [dispatch, ingredients, bun]);
 
   // React.useEffect(() => {
@@ -46,40 +50,32 @@ const OrderDetails = () => {
           Дождитесь готовности на&nbsp;орбитальной станции
         </p>
       </>
-    )
+    );
   };
 
   const loading = () => {
     return (
       <>
-        <p className="text text_type_main-medium mt-20 mb-10">
-          Загрузка...
-        </p>
-        <Loader/>
+        <p className="text text_type_main-medium mt-20 mb-10">Загрузка...</p>
+        <Loader />
       </>
-    )
+    );
   };
 
   const error = () => {
     return (
       <>
-        <p className="text text_type_main-medium mt-20 mb-10">
-          Ошибка!
-        </p>
+        <p className="text text_type_main-medium mt-20 mb-10">Ошибка!</p>
         <p className="text text_type_main-default text_color_inactive mb-20">
           {orderID}
         </p>
       </>
-    )
+    );
   };
 
   return (
     <>
-      { 
-        orderRequest ? loading() :
-        orderID && !orderFailed ? success() :
-        error()
-      }
+      {orderRequest ? loading() : orderID && !orderFailed ? success() : error()}
     </>
   );
 };
