@@ -1,4 +1,7 @@
-import React from "react";
+import { useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
+
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -6,115 +9,179 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
-import OrderId from "../order-id/order-id";
-import PropTypes from "prop-types";
-import { TYPE_INGREDIENT } from "../../utils/prop-types";
+import OrderDetails from "../order-details/order-details";
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+
+import {
+  addToConstructor,
+  CONSTRUCTOR_RESET,
+} from "../../services/actions/constructor";
+import { ORDER_REQUEST } from "../../services/actions/order";
 
 // RIGHT
-const BurgerConstructor = ({ data }) => {
-  const [modalVisibility, setVisible] = React.useState(false);
-  const [ingredientInModal, setIngredientInModal] = React.useState(false);
+const BurgerConstructor = () => {
+  const [modalVisibility, setVisible] = useState(false);
+  const { orderFailed } = useSelector((store) => store.order);
+  const items = useSelector((store) => store.itemsInConstructor);
+  const dispatch = useDispatch();
 
+  // dnd – from ings to constructor
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: ["bun", "main", "sauce"],
+    drop: (item) => {
+      dispatch(addToConstructor(item));
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  // dnd – move inside constructor
+  const [, dropTargetList] = useDrop({
+    accept: "constructorItem",
+    drop: (item) => {
+      console.log(item);
+      getDistance();
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  const getDistance = () => {
+    const listHeight = document.querySelector(`.${styles.list}`).offsetHeight;
+    const elHeight = document.querySelector(`.${styles.list} > *`).offsetHeight;
+
+    console.log(listHeight, elHeight);
+  };
+
+  // modal
   const handleOpenModal = (e) => {
     e.preventDefault();
-    setIngredientInModal({
-      calories: data.calories,
-      carbohydrates: data.carbohydrates,
-      fat: data.fat,
-      image_large: data.image_large,
-      name: data.name,
-      proteins: data.proteins,
+    dispatch({
+      type: ORDER_REQUEST,
+      payload: {
+        ingredients: items,
+        price: getPrice,
+      },
     });
     setVisible(true);
   };
 
   const handleCloseModal = (e) => {
     setVisible(false);
+
+    !orderFailed &&
+      dispatch({
+        type: CONSTRUCTOR_RESET,
+      });
   };
 
-  const getOrderID = () => {
-    return 9999999;
+  const getPrice = useMemo(() => {
+    return (
+      (items.bun ? items.bun.price * 2 : 0) +
+      items.ingredients.reduce((sum, item) => sum + item.price, 0)
+    );
+  }, [items]);
+
+  const getIngredients = () => {
+    const res = items.ingredients.map((item, i) => (
+      <BurgerConstructorItem ingredient={item} key={item.id} />
+    ));
+
+    return res;
   };
 
   return (
-    <section className={`${styles.section} ml-5 mr-5 pt-25`}>
+    <section className={`${styles.section} ml-5 mr-5 pt-25`} ref={dropTarget}>
       <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">
         Состав бургера
       </h2>
-      {data.map(
-        (item, i) =>
-          i === 0 && (
-            <div className={`${styles["ingredient-top"]} mb-4`} key={item._id}>
-              <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                type="top"
-                isLocked={true}
-              />
-            </div>
-          )
+      {items.bun ? (
+        <div className={`${styles["ingredient-top"]} mb-4`}>
+          <ConstructorElement
+            text={`${items.bun.name} (верх)`}
+            price={items.bun.price}
+            thumbnail={items.bun.image}
+            type="top"
+            isLocked={true}
+          />
+        </div>
+      ) : (
+        <div
+          className={`${styles["ingredient-top"]} ${styles.empty} ${
+            isHover ? styles.hover : ""
+          } mb-4`}
+        >
+          <span className="text text_type_main-small">
+            Место для верхней булки
+          </span>
+        </div>
       )}
       <div className={`${styles.wrapper} custom-scroll`}>
-        <ul className={`${styles.list} mb-4`}>
-          {data.map((item, i) => (
-            <li
-              className={`${styles.list__item} ml-3 mr-3 mb-4`}
-              key={item._id}
-            >
-              <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-              />
-            </li>
-          ))}
+        {items.ingredients.length <= 0 && (
+          <div
+            className={`${styles["ingredient-middle"]} ${styles.empty} ${
+              isHover ? styles.hover : ""
+            } mb-4`}
+          >
+            <span className="text text_type_main-small">Место для начинки</span>
+          </div>
+        )}
+
+        <ul className={`${styles.list} mb-4`} ref={dropTargetList}>
+          {items.ingredients.length > 0 && getIngredients()}
         </ul>
       </div>
-      {data.map(
-        (item, i) =>
-          i === 1 && (
-            <div
-              className={`${styles["ingredient-bottom"]} mb-10`}
-              key={item._id}
-            >
-              <ConstructorElement
-                key={item._id}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                type="bottom"
-                isLocked={true}
-              />
-            </div>
-          )
+      {items.bun ? (
+        <div className={`${styles["ingredient-bottom"]} mb-4`}>
+          <ConstructorElement
+            text={`${items.bun.name} (низ)`}
+            price={items.bun.price}
+            thumbnail={items.bun.image}
+            type="bottom"
+            isLocked={true}
+          />
+        </div>
+      ) : (
+        <div
+          className={`${styles["ingredient-bottom"]} ${styles.empty} ${
+            isHover ? styles.hover : ""
+          } mb-4`}
+        >
+          <span className="text text_type_main-small">
+            Место для нижней булки
+          </span>
+        </div>
       )}
       <div className={styles.order}>
         <p className={`${styles.price} mr-10`}>
-          <span className="text text_type_digits-default">999999&nbsp;</span>
-          <CurrencyIcon type="primary" />
+          {getPrice > 0 && (
+            <>
+              <span className="text text_type_digits-default">
+                {getPrice}&nbsp;
+              </span>
+              <CurrencyIcon type="primary" />
+            </>
+          )}
         </p>
         <Button
           htmlType="button"
           type="primary"
           size="large"
           onClick={handleOpenModal}
+          disabled={items.bun ? false : true}
         >
           Оформить заказ
         </Button>
-        {ingredientInModal && modalVisibility && (
+        {modalVisibility && (
           <Modal onClose={handleCloseModal} title="">
-            <OrderId id={getOrderID()} />
+            <OrderDetails />
           </Modal>
         )}
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape(TYPE_INGREDIENT).isRequired)
-    .isRequired,
 };
 
 export default BurgerConstructor;

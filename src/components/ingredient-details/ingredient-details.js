@@ -1,17 +1,20 @@
 import styles from "./ingredient-details.module.css";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const IngredientDetails = ({ data }) => {
+const IngredientDetails = () => {
+  const { image_large, name, calories, proteins, fat, carbohydrates } =
+    useSelector((store) => store.itemInModal);
+
   return (
     <>
       <img
         className={`${styles.image} mb-4`}
-        src={data.image_large}
-        alt={data.name}
+        src={image_large}
+        alt={name}
         width="480"
         height="240"
       />
-      <p className="text text_type_main-medium mb-8">{data.name}</p>
+      <p className="text text_type_main-medium mb-8">{name}</p>
       <table className={`${styles.table} mb-5`}>
         <thead className={`${styles.table__header}`}>
           <tr>
@@ -51,28 +54,28 @@ const IngredientDetails = ({ data }) => {
               <p
                 className={`${styles.table__text} text text_type_digits-default text_color_inactive`}
               >
-                {data.calories}
+                {calories}
               </p>
             </td>
             <td className={`${styles.table__td}`}>
               <p
                 className={`${styles.table__text} text text_type_digits-default text_color_inactive`}
               >
-                {data.proteins}
+                {proteins}
               </p>
             </td>
             <td className={`${styles.table__td}`}>
               <p
                 className={`${styles.table__text} text text_type_digits-default text_color_inactive`}
               >
-                {data.fat}
+                {fat}
               </p>
             </td>
             <td className={`${styles.table__td}`}>
               <p
                 className={`${styles.table__text} text text_type_digits-default text_color_inactive`}
               >
-                {data.carbohydrates}
+                {carbohydrates}
               </p>
             </td>
           </tr>
@@ -80,17 +83,6 @@ const IngredientDetails = ({ data }) => {
       </table>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  data: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    image_large: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-  }),
 };
 
 export default IngredientDetails;

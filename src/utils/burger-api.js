@@ -1,13 +1,11 @@
+import { checkResponse } from "./check-response";
+
 const NORMA_API = `https://norma.nomoreparties.space/api`;
 
-const getData = (dataName) => {
-  return fetch(`${NORMA_API}/${dataName}`)
-    .then((res) => res.json())
+export const request = (endpoint, options) => {
+  return fetch(`${NORMA_API}/${endpoint}`, options)
+    .then(checkResponse)
     .then((data) => {
-      if (data?.success) return data.data;
-      return Promise.reject(data);
-    })
-    .catch(() => alert("Во время загрузки ингредиентов произошла ошибка."));
+      return data;
+    });
 };
-
-export default getData;

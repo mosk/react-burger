@@ -1,38 +1,54 @@
 import React from "react";
 // import styles from './tabs.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 
-const Tabs = () => {
-  const [current, setCurrent] = React.useState(`bun`);
+const Tabs = ({ setCurrentTab, currentTab }) => {
+  const tabClickHandler = (tab) => {
+    setCurrentTab(tab);
+
+    const element = document.querySelector(`.${tab}`);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <div className="mb-10" style={{ display: "flex" }}>
       <Tab
         value="bun"
-        active={current === "bun"}
+        active={currentTab === "bun"}
         key={`bun`}
-        onClick={setCurrent}
+        onClick={() => tabClickHandler("bun")}
       >
         Булки
       </Tab>
       <Tab
         value="sauce"
-        active={current === "sauce"}
+        active={currentTab === "sauce"}
         key={`sauce`}
-        onClick={setCurrent}
+        onClick={() => tabClickHandler("sauce")}
       >
         Соусы
       </Tab>
       <Tab
         value="main"
-        active={current === "main"}
+        active={currentTab === "main"}
         key={`main`}
-        onClick={setCurrent}
+        onClick={() => tabClickHandler("main")}
       >
         Начинки
       </Tab>
     </div>
   );
+};
+
+Tabs.propTypes = {
+  setCurrentTab: PropTypes.func.isRequired,
+  currentTab: PropTypes.string.isRequired,
 };
 
 export default Tabs;
