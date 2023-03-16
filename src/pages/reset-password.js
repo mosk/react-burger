@@ -27,6 +27,23 @@ export const ResetPassword = () => {
 		(e) => {
 			e.preventDefault();
 
+			request('auth/register', {
+				method: 'POST',
+				mode: 'cors',
+				cache: 'no-cache',
+				credentials: 'same-origin',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				redirect: 'follow',
+				referrerPolicy: 'no-referrer',
+				body: JSON.stringify({
+					"email": "miiixsc@yandex.ru",
+					"password": "starcraft",
+					"name": "Mosk"
+				})
+			}).then(res => console.log(res));
+
 			request('password-reset/reset', {
 				method: 'POST',
 				mode: 'cors',
@@ -54,7 +71,7 @@ export const ResetPassword = () => {
 					<Input
 						type={'password'}
 						placeholder={'Введите новый пароль'}
-						onChange={e => onChange(e.target.value)}
+						onChange={e => onChange(e)}
 						icon={'ShowIcon'}
 						value={form.password}
 						name={'password'}
@@ -68,7 +85,7 @@ export const ResetPassword = () => {
 					<Input
 						type={'text'}
 						placeholder={'Введите код из письма'}
-						onChange={e => onChange(e.target.value)}
+						onChange={e => onChange(e)}
 						value={form.code}
 						name={'code'}
 						error={false}

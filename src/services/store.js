@@ -8,6 +8,7 @@ const initialState = {
   itemsInConstructor: [],
   itemInModal: {},
   order: {},
+  auth: {},
 };
 
 const store = configureStore({

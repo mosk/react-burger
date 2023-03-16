@@ -4,7 +4,7 @@
   margin: 0 auto;
 }
 
-.main {
+.content {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -13,16 +13,16 @@
   margin: 0 auto;
 }
 
-main>* {
+.content>* {
   width: 50%;
 }
 
 @media (max-width: 1280px) {
-  .main {
+  .content {
     flex-wrap: wrap;
   }
 
-  .main>* {
+  .content>* {
     width: 100%;
   }
 }

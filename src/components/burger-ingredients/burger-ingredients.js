@@ -95,14 +95,9 @@ const BurgerIngredients = ({ data }) => {
   );
 };
 
-// Вопрос:
-// Один из типов - это правильное решение или можно более элегантно решить?
-// Если убираю второй вариант - ругается на то что 'data' не определена
 BurgerIngredients.propTypes = {
-  data: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.shape(TYPE_INGREDIENT).isRequired),
-    PropTypes.array,
-  ]).isRequired,
+  data: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape(TYPE_INGREDIENT).isRequired), PropTypes.array])
+    .isRequired,
 };
 
 export default BurgerIngredients;
