@@ -35,11 +35,17 @@
 
 .link {
 	display: block;
-	width: 100%;
+	width: auto;
 	margin: 0;
 	padding: 17px 0;
+	text-align: left;
 	color: #8585AD;
+	background-color: transparent;
+	background-image: none;
+	background: unset;
+	border: none;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .link--active {
@@ -54,4 +60,19 @@
 	width: 100%;
 	min-width: 33%;
 	max-width: 480px;
+}
+
+.form {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.button--submit {
+	margin: 0;
+}
+
+.button--reset {
+	margin: 0;
 }

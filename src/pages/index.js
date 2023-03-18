@@ -1,9 +1,9 @@
-import { NotFound404 } from "./not-found";
-import { Registration } from "./registration";
-import { SignIn } from "./sign-in";
-import { ForgotPassword } from "./forgot-password";
-import { ResetPassword } from "./reset-password";
-import { Profile } from "./profile";
-import { Home } from "./home";
+import { NotFound404 } from "./not-found/not-found";
+import { Registration } from "./registration/registration";
+import { SignIn } from "./sign-in/sign-in";
+import { ForgotPassword } from "./forgot-pasword/forgot-password";
+import { ResetPassword } from "./reset-password/reset-password";
+import { Profile } from "./user/profile";
+import { Home } from "./home/home";
 
 export { NotFound404, Registration, SignIn, ForgotPassword, ResetPassword, Profile, Home };

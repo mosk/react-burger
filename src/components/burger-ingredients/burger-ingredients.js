@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import styles from "./burger-ingredients.module.css";
 
 import Tabs from "../tabs/tabs";
-import Ingredient from "../ingredient/ingredient";
+import Ingredient from "./ingredient/ingredient";
 
 import PropTypes from "prop-types";
 import { TYPE_INGREDIENT } from "../../utils/prop-types";

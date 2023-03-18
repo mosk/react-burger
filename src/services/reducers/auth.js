@@ -1,4 +1,4 @@
-import { AUTH_REQUEST, AUTH_LOGIN, AUTH_REGISTER, AUTH_LOGOUT, AUTH_FAILED } from "../actions/auth";
+import { AUTH_REQUEST, AUTH_LOGIN, AUTH_REGISTER, AUTH_LOGOUT, AUTH_FAILED, AUTH_CHECKED } from "../actions/auth";
 
 const initialState = {
   request: false,
@@ -6,8 +6,7 @@ const initialState = {
   name: "",
   authFailed: false,
   message: "",
-  accessToken: "",
-  refreshToken: "",
+  isAuthChecked: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -24,6 +23,7 @@ export const authReducer = (state = initialState, action) => {
         request: false,
         email: action.payload.email,
         name: action.payload.name,
+        isAuthChecked: true,
       };
     }
     case AUTH_REGISTER: {
@@ -32,14 +32,16 @@ export const authReducer = (state = initialState, action) => {
         request: false,
         email: action.payload.email,
         name: action.payload.name,
+        isAuthChecked: true,
       };
     }
     case AUTH_LOGOUT: {
       return {
         ...state,
-        itemsRequest: false,
-        itemsFailed: true,
-        items: action.payload,
+        request: false,
+        email: "",
+        name: "",
+        isAuthChecked: false,
       };
     }
     case AUTH_FAILED: {
@@ -48,6 +50,13 @@ export const authReducer = (state = initialState, action) => {
         request: false,
         authFailed: true,
         message: action.payload,
+        isAuthChecked: false,
+      };
+    }
+    case AUTH_CHECKED: {
+      return {
+        ...state,
+        isAuthChecked: true,
       };
     }
     default: {

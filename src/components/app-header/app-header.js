@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styles from "./app-header.module.css";
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const AppHeader = () => {
+  const { name } = useSelector((store) => store.auth);
+
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
       <a href="/" className={styles.logo}>
@@ -31,7 +34,7 @@ const AppHeader = () => {
           }
         >
           <ProfileIcon type="secondary" />
-          <span className="text text_type_main-default pl-2">Личный кабинет</span>
+          <span className="text text_type_main-default pl-2">{name ? name : "Личный кабинет"}</span>
         </NavLink>
       </nav>
     </header>

@@ -1,25 +1,18 @@
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
 
-import styles from "./burger-constructor-item.module.css";
-import {
-  ConstructorElement,
-  DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./ingredient.module.css";
+import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import {
-  CONSTRUCTOR_DELETE,
-  CONSTRUCTOR_REORDER,
-} from "../../services/actions/constructor";
+import { CONSTRUCTOR_DELETE, CONSTRUCTOR_REORDER } from "../../../services/actions/constructor";
 
 import PropTypes from "prop-types";
-import { TYPE_INGREDIENT } from "../../utils/prop-types";
+import { TYPE_INGREDIENT } from "../../../utils/prop-types";
 
 // RIGHT
-const BurgerConstructorItem = ({ ingredient }) => {
+const Ingredient = ({ ingredient }) => {
   const { id, name, price, image } = ingredient;
-  const items = useSelector((store) => store.itemsInConstructor);
 
   const dispatch = useDispatch();
 
@@ -75,11 +68,7 @@ const BurgerConstructorItem = ({ ingredient }) => {
   drag(drop(ref));
 
   return (
-    <li
-      className={`${styles.list__item} ml-3 mr-3 mb-4`}
-      ref={ref}
-      data-handler-id={handlerId}
-    >
+    <li className={`${styles.list__item} ml-3 mr-3 mb-4`} ref={ref} data-handler-id={handlerId}>
       <DragIcon type="primary" />
       <ConstructorElement
         text={name}
@@ -92,8 +81,8 @@ const BurgerConstructorItem = ({ ingredient }) => {
   );
 };
 
-BurgerConstructorItem.propTypes = {
+Ingredient.propTypes = {
   ingredient: PropTypes.shape(TYPE_INGREDIENT).isRequired,
 };
 
-export default BurgerConstructorItem;
+export default Ingredient;

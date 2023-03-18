@@ -3,19 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 
 import styles from "./burger-constructor.module.css";
-import {
-  ConstructorElement,
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement, Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import Ingredient from "./ingredient/ingredient";
 
-import {
-  addToConstructor,
-  CONSTRUCTOR_RESET,
-} from "../../services/actions/constructor";
+import { addToConstructor, CONSTRUCTOR_RESET } from "../../services/actions/constructor";
 import { ORDER_REQUEST } from "../../services/actions/order";
 
 // RIGHT
@@ -78,25 +71,18 @@ const BurgerConstructor = () => {
   };
 
   const getPrice = useMemo(() => {
-    return (
-      (items.bun ? items.bun.price * 2 : 0) +
-      items.ingredients.reduce((sum, item) => sum + item.price, 0)
-    );
+    return (items.bun ? items.bun.price * 2 : 0) + items.ingredients.reduce((sum, item) => sum + item.price, 0);
   }, [items]);
 
   const getIngredients = () => {
-    const res = items.ingredients.map((item, i) => (
-      <BurgerConstructorItem ingredient={item} key={item.id} />
-    ));
+    const res = items.ingredients.map((item, i) => <Ingredient ingredient={item} key={item.id} />);
 
     return res;
   };
 
   return (
     <section className={`${styles.section} ml-5 mr-5 pt-25`} ref={dropTarget}>
-      <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">
-        Состав бургера
-      </h2>
+      <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">Состав бургера</h2>
       {items.bun ? (
         <div className={`${styles["ingredient-top"]} mb-4`}>
           <ConstructorElement
@@ -108,23 +94,13 @@ const BurgerConstructor = () => {
           />
         </div>
       ) : (
-        <div
-          className={`${styles["ingredient-top"]} ${styles.empty} ${
-            isHover ? styles.hover : ""
-          } mb-4`}
-        >
-          <span className="text text_type_main-small">
-            Место для верхней булки
-          </span>
+        <div className={`${styles["ingredient-top"]} ${styles.empty} ${isHover ? styles.hover : ""} mb-4`}>
+          <span className="text text_type_main-small">Место для верхней булки</span>
         </div>
       )}
       <div className={`${styles.wrapper} custom-scroll`}>
         {items.ingredients.length <= 0 && (
-          <div
-            className={`${styles["ingredient-middle"]} ${styles.empty} ${
-              isHover ? styles.hover : ""
-            } mb-4`}
-          >
+          <div className={`${styles["ingredient-middle"]} ${styles.empty} ${isHover ? styles.hover : ""} mb-4`}>
             <span className="text text_type_main-small">Место для начинки</span>
           </div>
         )}
@@ -144,23 +120,15 @@ const BurgerConstructor = () => {
           />
         </div>
       ) : (
-        <div
-          className={`${styles["ingredient-bottom"]} ${styles.empty} ${
-            isHover ? styles.hover : ""
-          } mb-4`}
-        >
-          <span className="text text_type_main-small">
-            Место для нижней булки
-          </span>
+        <div className={`${styles["ingredient-bottom"]} ${styles.empty} ${isHover ? styles.hover : ""} mb-4`}>
+          <span className="text text_type_main-small">Место для нижней булки</span>
         </div>
       )}
       <div className={styles.order}>
         <p className={`${styles.price} mr-10`}>
           {getPrice > 0 && (
             <>
-              <span className="text text_type_digits-default">
-                {getPrice}&nbsp;
-              </span>
+              <span className="text text_type_digits-default">{getPrice}&nbsp;</span>
               <CurrencyIcon type="primary" />
             </>
           )}
