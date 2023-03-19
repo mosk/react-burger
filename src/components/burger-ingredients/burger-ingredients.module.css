@@ -21,3 +21,8 @@
   flex-wrap: nowrap;
   position: relative;
 }
+
+.card {
+  color: #F2F2F3;
+  text-decoration: none;
+}

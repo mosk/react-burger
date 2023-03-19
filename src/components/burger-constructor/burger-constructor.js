@@ -16,6 +16,7 @@ const BurgerConstructor = () => {
   const [modalVisibility, setVisible] = useState(false);
   const { orderFailed } = useSelector((store) => store.order);
   const items = useSelector((store) => store.itemsInConstructor);
+  const { isAuthChecked } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   // dnd – from ings to constructor
@@ -138,7 +139,7 @@ const BurgerConstructor = () => {
           type="primary"
           size="large"
           onClick={handleOpenModal}
-          disabled={items.bun ? false : true}
+          disabled={items.bun && isAuthChecked ? false : true}
         >
           Оформить заказ
         </Button>

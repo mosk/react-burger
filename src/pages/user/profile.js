@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import { loginRequest } from "../../services/actions/auth";
 
 import Loader from "../../components/loader/loader";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-
-import { logoutRequest } from "../../services/actions/auth";
+import { Nav } from "../../components/profile/nav/nav";
 
 import styles from "./profile.module.css";
 
@@ -18,6 +19,7 @@ export const Profile = () => {
     email: email,
     password: "",
   });
+  const [show, setButtons] = useState(false);
 
   const nameRef = useRef(null);
   const emailRef = useRef(null);
@@ -25,12 +27,16 @@ export const Profile = () => {
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+
+    if (email !== form.email || name !== form.name) {
+      setButtons(true);
+    }
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     console.log(`отправка формы`);
-    // dispatch(loginRequest(form)).then(navigate("/", { replace: true }));
+    dispatch(loginRequest(form)).then(navigate("/", { replace: true }));
   };
 
   const onResetHandler = (e) => {
@@ -38,62 +44,12 @@ export const Profile = () => {
     setForm({ ...form, name, email, password: "" });
   };
 
-  const onLogoutHandler = (e) => {
-    e.preventDefault();
-    dispatch(logoutRequest()).then(navigate("/login", { replace: true }));
-  };
-
-  const showPassword = (e) => {
-    e.preventDefault();
-    console.log(e.target);
-    e.target.type = "text";
-  };
-
   if (!isAuthChecked) {
     return <Loader />;
   } else {
     return (
       <main className={styles.container}>
-        <aside className={styles.aside}>
-          <ul className={styles.list}>
-            <li className={styles.list__item}>
-              <NavLink
-                to="/profile"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.link} ${styles["link--active"]} text text_type_main-medium`
-                    : `${styles.link} text text_type_main-medium`
-                }
-              >
-                Профиль
-              </NavLink>
-            </li>
-            <li className={styles.list__item}>
-              <NavLink
-                to="/profile/orders"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.link} ${styles["link--active"]} text text_type_main-medium`
-                    : `${styles.link} text text_type_main-medium`
-                }
-              >
-                История заказов
-              </NavLink>
-            </li>
-            <li className={styles.list__item}>
-              <button
-                type="button"
-                className={`${styles.link} text text_type_main-medium`}
-                onClick={(e) => onLogoutHandler(e)}
-              >
-                Выход
-              </button>
-            </li>
-          </ul>
-          <p className="text text_type_main-default text_color_inactive">
-            В этом разделе вы можете изменить свои персональные данные
-          </p>
-        </aside>
+        <Nav />
         <section className={styles.content}>
           <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">Персональные данные</h2>
           <form className={styles.form} onSubmit={(e) => onSubmitHandler(e)}>
@@ -134,7 +90,6 @@ export const Profile = () => {
               name={"password"}
               error={false}
               ref={passwordRef}
-              onIconClick={(e) => showPassword(e)}
               required={true}
               errorText={"Ошибка"}
               size={"default"}
@@ -144,7 +99,7 @@ export const Profile = () => {
               htmlType="submit"
               type="primary"
               size="large"
-              disabled={request}
+              disabled={!show}
               extraClass={styles["button--submit"]}
             >
               Сохранить
@@ -154,7 +109,7 @@ export const Profile = () => {
               type="primary"
               size="large"
               onClick={(e) => onResetHandler(e)}
-              disabled={request}
+              disabled={!show}
               extraClass={styles["button--reset"]}
             >
               Отмена
