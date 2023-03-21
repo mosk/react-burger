@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useDrop } from "react-dnd";
 
 import styles from "./burger-constructor.module.css";
@@ -18,6 +19,7 @@ const BurgerConstructor = () => {
   const items = useSelector((store) => store.itemsInConstructor);
   const { isAuthChecked } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // dnd – from ings to constructor
   const [{ isHover }, dropTarget] = useDrop({
@@ -50,16 +52,21 @@ const BurgerConstructor = () => {
   };
 
   // modal
-  const handleOpenModal = (e) => {
+  const onOrderButtonClick = (e) => {
     e.preventDefault();
-    dispatch({
-      type: ORDER_REQUEST,
-      payload: {
-        ingredients: items,
-        price: getPrice,
-      },
-    });
-    setVisible(true);
+
+    if (isAuthChecked) {
+      dispatch({
+        type: ORDER_REQUEST,
+        payload: {
+          ingredients: items,
+          price: getPrice,
+        },
+      });
+      setVisible(true);
+    } else {
+      navigate("/login", { replace: true });
+    }
   };
 
   const handleCloseModal = (e) => {
@@ -134,13 +141,7 @@ const BurgerConstructor = () => {
             </>
           )}
         </p>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          onClick={handleOpenModal}
-          disabled={items.bun && isAuthChecked ? false : true}
-        >
+        <Button htmlType="button" type="primary" size="large" onClick={onOrderButtonClick} disabled={!items.bun}>
           Оформить заказ
         </Button>
         {modalVisibility && (

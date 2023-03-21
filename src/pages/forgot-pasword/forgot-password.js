@@ -1,67 +1,55 @@
-import { useState, useRef, useCallback } from "react";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useForm } from "../../utils/hooks";
+import { showPassword } from "../../utils/showPassword";
+
+import { passwordResetRequest } from "../../services/actions/auth";
 
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./forgot-password.module.css";
 
-import { request } from "../../utils/burger-api";
-
 export const ForgotPassword = () => {
-  const [form, setForm] = useState({ email: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { values, handleChange } = useForm({
+    email: "",
+  });
 
   const emailRef = useRef(null);
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    dispatch(passwordResetRequest(values)).then(() => navigate("/reset-password"));
   };
-
-  const restore = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      request("password-reset", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify({
-          email: form.email,
-        }),
-      }).then((res) => console.log(res));
-    },
-    [form]
-  );
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={onSubmitHandler}>
           <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
           <Input
             type={"email"}
             placeholder={"Укажите e-mail"}
-            onChange={(e) => onChange(e)}
-            value={form.email}
+            onChange={handleChange}
+            value={values.email}
             name={"email"}
             error={false}
             ref={emailRef}
+            onIconClick={showPassword}
             errorText={"Ошибка"}
             size={"default"}
             required={true}
             extraClass="mb-6"
           />
-          <Button htmlType="button" type="primary" size="large" onClick={(e) => restore(e)}>
+          <Button htmlType="submit" type="primary" size="large">
             Восстановить
           </Button>
         </form>
         <p className="text text_type_main-default text_color_inactive mb-1">
-          Вспомнили пароль?{" "}
+          Вспомнили пароль? <br />
           <Link to="/login" className={`text text_type_main-default ${styles.link}`}>
             Войти
           </Link>

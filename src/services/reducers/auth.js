@@ -24,6 +24,7 @@ export const authReducer = (state = initialState, action) => {
         email: action.payload.email,
         name: action.payload.name,
         isAuthChecked: true,
+        message: "",
       };
     }
     case AUTH_REGISTER: {
@@ -33,6 +34,7 @@ export const authReducer = (state = initialState, action) => {
         email: action.payload.email,
         name: action.payload.name,
         isAuthChecked: true,
+        message: "",
       };
     }
     case AUTH_LOGOUT: {
@@ -42,6 +44,7 @@ export const authReducer = (state = initialState, action) => {
         email: "",
         name: "",
         isAuthChecked: false,
+        message: "",
       };
     }
     case AUTH_FAILED: {

@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { loginRequest } from "../../services/actions/auth";
+import { loginRequest, refreshUserRequest } from "../../services/actions/auth";
 
 import Loader from "../../components/loader/loader";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -35,8 +35,7 @@ export const Profile = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(`отправка формы`);
-    dispatch(loginRequest(form)).then(navigate("/", { replace: true }));
+    dispatch(refreshUserRequest(form));
   };
 
   const onResetHandler = (e) => {
@@ -49,74 +48,76 @@ export const Profile = () => {
   } else {
     return (
       <main className={styles.container}>
-        <Nav />
-        <section className={styles.content}>
-          <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">Персональные данные</h2>
-          <form className={styles.form} onSubmit={(e) => onSubmitHandler(e)}>
-            <Input
-              type={"text"}
-              placeholder={"Имя"}
-              onChange={(e) => onChange(e)}
-              icon={"EditIcon"}
-              value={form.name}
-              name={"name"}
-              error={false}
-              ref={nameRef}
-              required={true}
-              errorText={"Ошибка"}
-              size={"default"}
-              extraClass="mb-6"
-            />
-            <Input
-              type={"email"}
-              placeholder={"Логин"}
-              onChange={(e) => onChange(e)}
-              icon={"EditIcon"}
-              value={form.email}
-              name={"email"}
-              error={false}
-              ref={emailRef}
-              required={true}
-              errorText={"Ошибка"}
-              size={"default"}
-              extraClass="mb-6"
-            />
-            <Input
-              type={"password"}
-              placeholder={"Пароль"}
-              onChange={(e) => onChange(e)}
-              icon={"EditIcon"}
-              value={form.password}
-              name={"password"}
-              error={false}
-              ref={passwordRef}
-              required={true}
-              errorText={"Ошибка"}
-              size={"default"}
-              extraClass="mb-6"
-            />
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="large"
-              disabled={!show}
-              extraClass={styles["button--submit"]}
-            >
-              Сохранить
-            </Button>
-            <Button
-              htmlType="button"
-              type="primary"
-              size="large"
-              onClick={(e) => onResetHandler(e)}
-              disabled={!show}
-              extraClass={styles["button--reset"]}
-            >
-              Отмена
-            </Button>
-            {authFailed && <p className="text text_type_main-default text_color_inactive">{message}</p>}
-          </form>
-        </section>
+        <>
+          <Nav />
+          <section className={styles.content}>
+            <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">Персональные данные</h2>
+            <form className={styles.form} onSubmit={(e) => onSubmitHandler(e)}>
+              <Input
+                type={"text"}
+                placeholder={"Имя"}
+                onChange={(e) => onChange(e)}
+                icon={"EditIcon"}
+                value={form.name}
+                name={"name"}
+                error={false}
+                ref={nameRef}
+                required={true}
+                errorText={"Ошибка"}
+                size={"default"}
+                extraClass="mb-6"
+              />
+              <Input
+                type={"email"}
+                placeholder={"Логин"}
+                onChange={(e) => onChange(e)}
+                icon={"EditIcon"}
+                value={form.email}
+                name={"email"}
+                error={false}
+                ref={emailRef}
+                required={true}
+                errorText={"Ошибка"}
+                size={"default"}
+                extraClass="mb-6"
+              />
+              <Input
+                type={"password"}
+                placeholder={"Пароль"}
+                onChange={(e) => onChange(e)}
+                icon={"EditIcon"}
+                value={form.password}
+                name={"password"}
+                error={false}
+                ref={passwordRef}
+                required={true}
+                errorText={"Ошибка"}
+                size={"default"}
+                extraClass="mb-6"
+              />
+              <Button
+                htmlType="submit"
+                type="primary"
+                size="large"
+                disabled={!show}
+                extraClass={styles["button--submit"]}
+              >
+                Сохранить
+              </Button>
+              <Button
+                htmlType="button"
+                type="primary"
+                size="large"
+                onClick={(e) => onResetHandler(e)}
+                disabled={!show}
+                extraClass={styles["button--reset"]}
+              >
+                Отмена
+              </Button>
+              {authFailed && <p className="text text_type_main-default text_color_inactive mt-4">{message}</p>}
+            </form>
+          </section>
+        </>
       </main>
     );
   }

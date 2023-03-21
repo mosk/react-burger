@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ErrorBoundary from "../../utils/error-boundary";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-import { checkAuth } from "../../services/actions/auth";
+import { getCookie } from "../../utils/cookie";
+import { checkAuth, authRequest } from "../../services/actions/auth";
 
 import styles from "./app.module.css";
 
@@ -31,22 +32,18 @@ const App = () => {
   const ModalSwitch = () => {
     const location = useLocation();
     const navigate = useNavigate();
-
-    const { name } = useSelector((store) => store.auth);
     const dispatch = useDispatch();
+
+    const background = location.state && location.state.background;
 
     const onCloseHandler = () => {
       navigate(-1);
     };
 
     useEffect(() => {
-      if (name.length === 0) {
-        dispatch(checkAuth());
-      }
+      dispatch(checkAuth());
       dispatch(getItems());
-    }, [name, dispatch]);
-
-    let background = location.state && location.state.background;
+    }, []);
 
     return (
       <>
@@ -98,7 +95,7 @@ const App = () => {
           <Route
             path="/reset-password"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyUnAuth>
                 <ResetPassword />
               </ProtectedRoute>
             }

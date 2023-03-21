@@ -1,17 +1,17 @@
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { getCookie } from "../../utils/cookie.js";
 import PropTypes from "prop-types";
 
 export const ProtectedRoute = ({ onlyUnAuth = false, children }) => {
-  const { name } = useSelector((state) => state.auth);
   const location = useLocation();
+  const isAuth = getCookie("token");
 
-  if (onlyUnAuth && name.length > 0) {
+  if (onlyUnAuth && isAuth) {
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from} />;
   }
 
-  if (!onlyUnAuth && name.length === 0) {
+  if (!onlyUnAuth && !isAuth) {
     return <Navigate to={{ pathname: "/login", state: { from: location } }} />;
   }
 

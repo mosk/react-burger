@@ -1,83 +1,47 @@
-import { useState, useRef, useCallback } from "react";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useForm } from "../../utils/hooks";
+import { showPassword } from "../../utils/showPassword";
+
+import { passwordChangeRequest } from "../../services/actions/auth";
 
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./reset-password.module.css";
 
-import { request } from "../../utils/burger-api";
-
 export const ResetPassword = () => {
-  const [form, setForm] = useState({ password: "", code: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { values, handleChange } = useForm({
+    password: "",
+    token: "",
+  });
 
   const codeRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const showPassword = (e) => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(e.target);
-    e.target.type = "text";
+    dispatch(passwordChangeRequest(values)).then(() => navigate("/"));
   };
-
-  const save = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      request("auth/register", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify({
-          email: "miiixsc@yandex.ru",
-          password: "starcraft",
-          name: "Mosk",
-        }),
-      }).then((res) => console.log(res));
-
-      request("password-reset/reset", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify({
-          password: form.password,
-          token: form.token,
-        }),
-      }).then((res) => console.log(res));
-    },
-    [form]
-  );
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={onSubmitHandler}>
           <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
           <Input
             type={"password"}
             placeholder={"Введите новый пароль"}
-            onChange={(e) => onChange(e)}
+            onChange={handleChange}
             icon={"ShowIcon"}
-            value={form.password}
+            value={values.password}
             name={"password"}
             error={false}
             ref={passwordRef}
-            onIconClick={(e) => showPassword(e)}
+            onIconClick={showPassword}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="mb-6"
@@ -85,21 +49,21 @@ export const ResetPassword = () => {
           <Input
             type={"text"}
             placeholder={"Введите код из письма"}
-            onChange={(e) => onChange(e)}
-            value={form.code}
-            name={"code"}
+            onChange={handleChange}
+            value={values.token}
+            name={"token"}
             error={false}
             ref={codeRef}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="mb-6"
           />
-          <Button htmlType="button" type="primary" size="large" onClick={(e) => save(e)}>
+          <Button htmlType="submit" type="primary" size="large">
             Сохранить
           </Button>
         </form>
         <p className="text text_type_main-default text_color_inactive mb-1">
-          Вспомнили пароль?{" "}
+          Вспомнили пароль? <br />
           <Link to="/login" className={`text text_type_main-default ${styles.link}`}>
             Войти
           </Link>

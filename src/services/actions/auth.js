@@ -13,6 +13,8 @@ const loginPath = "auth/login";
 const logoutPath = "auth/logout";
 const tokenPath = "auth/token";
 const authPath = "auth/user";
+const passwordResetPath = "password-reset";
+const passwordChangePath = "password-reset/reset";
 
 const accessTokenExpiresTime = 1200; // in seconds
 
@@ -37,23 +39,20 @@ export const registerRequest = (form) => (dispatch) => {
     }),
   })
     .then((res) => {
-      if (res.accessToken) {
-        let authToken = res.accessToken.split("Bearer ")[1];
-        setCookie("token", authToken, {
-          expires: accessTokenExpiresTime,
-        });
-      }
-      if (res.refreshToken) {
-        let refreshToken = res.refreshToken;
-        setCookie("refreshToken", refreshToken);
-      }
+      let authToken = res.accessToken.split("Bearer ")[1];
+      let refreshToken = res.refreshToken;
+
+      setCookie("token", authToken, {
+        expires: accessTokenExpiresTime,
+      });
+      setCookie("refreshToken", refreshToken);
+
       dispatch({
         type: AUTH_REGISTER,
         payload: res.user,
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: AUTH_FAILED,
         payload: err,
@@ -81,23 +80,20 @@ export const loginRequest = (form) => (dispatch) => {
     }),
   })
     .then((res) => {
-      if (res.accessToken) {
-        let authToken = res.accessToken.split("Bearer ")[1];
-        setCookie("token", authToken, {
-          expires: accessTokenExpiresTime,
-        });
-      }
-      if (res.refreshToken) {
-        let refreshToken = res.refreshToken;
-        setCookie("refreshToken", refreshToken);
-      }
+      let authToken = res.accessToken.split("Bearer ")[1];
+      let refreshToken = res.refreshToken;
+
+      setCookie("token", authToken, {
+        expires: accessTokenExpiresTime,
+      });
+      setCookie("refreshToken", refreshToken);
+
       dispatch({
         type: AUTH_LOGIN,
         payload: res.user,
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: AUTH_FAILED,
         payload: err,
@@ -111,14 +107,8 @@ export const authRequest = () => (dispatch) => {
   });
   return request(authPath, {
     method: "GET",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
-      "Content-Type": "application/json",
-    },
-    authorization: {
-      accessToken: getCookie("token"),
+      authorization: `Bearer ${getCookie("token")}`,
     },
     redirect: "follow",
     referrerPolicy: "no-referrer",
@@ -130,8 +120,8 @@ export const authRequest = () => (dispatch) => {
       });
     })
     .catch((err) => {
-      if (err === "You should be authorised") {
-        dispatch(refreshToken(authRequest()));
+      if (err === "jwt expired" || err === "jwt malformed") {
+        dispatch(refreshToken(authRequest));
       } else {
         dispatch({
           type: AUTH_FAILED,
@@ -152,9 +142,7 @@ export const refreshUserRequest = (form) => (dispatch) => {
     credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
-    },
-    authorization: {
-      accessToken: getCookie("token"),
+      authorization: `Bearer ${getCookie("token")}`,
     },
     redirect: "follow",
     referrerPolicy: "no-referrer",
@@ -215,16 +203,11 @@ export const logoutRequest = () => (dispatch) => {
     });
 };
 
-export const checkAuth = () => (dispatch) => {
-  if (getCookie("token")) {
-    dispatch(authRequest()).finally(() => {
-      dispatch({ type: AUTH_CHECKED });
-    });
-  }
-};
-
-const refreshToken = (afterRefresh) => (dispatch) => {
-  return request(tokenPath, {
+export const passwordResetRequest = (form) => (dispatch) => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
+  return request(passwordResetPath, {
     method: "POST",
     mode: "cors",
     cache: "no-cache",
@@ -235,14 +218,78 @@ const refreshToken = (afterRefresh) => (dispatch) => {
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify({
+      email: form.email,
+    }),
+  }).catch((err) => {
+    dispatch({
+      type: AUTH_FAILED,
+      payload: err,
+    });
+  });
+};
+
+export const passwordChangeRequest = (form) => (dispatch) => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
+  return request(passwordChangePath, {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify({
+      email: form.email,
+      token: form.token,
+    }),
+  }).catch((err) => {
+    dispatch({
+      type: AUTH_FAILED,
+      payload: err,
+    });
+  });
+};
+
+export const checkAuth = () => (dispatch) => {
+  if (getCookie("refreshToken")) {
+    dispatch(authRequest()).finally(() => {
+      dispatch({ type: AUTH_CHECKED });
+    });
+  }
+};
+
+const refreshToken = (afterRefresh) => (dispatch) => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
+  return request(tokenPath, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
       token: getCookie("refreshToken"),
     }),
-  }).then((res) => {
-    let authToken = res.accessToken.split("Bearer ")[1];
-    setCookie("token", authToken, {
-      expires: accessTokenExpiresTime,
+  })
+    .then((res) => {
+      let authToken = res.accessToken.split("Bearer ")[1];
+      let refreshToken = res.refreshToken;
+
+      setCookie("token", authToken, {
+        expires: accessTokenExpiresTime,
+      });
+      setCookie("refreshToken", refreshToken);
+
+      dispatch(afterRefresh());
+    })
+    .catch((err) => {
+      dispatch({
+        type: AUTH_FAILED,
+        payload: err,
+      });
     });
-    setCookie("refreshToken", res.refreshToken);
-    dispatch(afterRefresh);
-  });
 };

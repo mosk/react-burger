@@ -1,18 +1,20 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
-import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useForm } from "../../utils/hooks";
+import { showPassword } from "../../utils/showPassword";
 
 import { loginRequest } from "../../services/actions/auth";
+
+import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./sign-in.module.css";
 
 export const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { request, authFailed } = useSelector((store) => store.auth);
-  const [form, setForm] = useState({
+  const { authFailed, message } = useSelector((store) => store.auth);
+  const { values, handleChange } = useForm({
     email: "",
     password: "",
   });
@@ -20,31 +22,21 @@ export const SignIn = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(loginRequest(form)).then(navigate("/", { replace: true }));
-  };
-
-  const showPassword = (e) => {
-    e.preventDefault();
-    console.log(e.target);
-    e.target.type = "text";
+    dispatch(loginRequest(values)).then(() => navigate(-1));
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <form className={styles.form} onSubmit={(e) => onSubmitHandler(e)}>
+        <form className={styles.form} onSubmit={onSubmitHandler}>
           <p className="text text_type_main-medium mb-6">Вход</p>
           <Input
             type={"email"}
             placeholder={"E-mail"}
-            onChange={(e) => onChange(e)}
-            value={form.email}
+            onChange={handleChange}
+            value={values.email}
             name={"email"}
             error={false}
             ref={emailRef}
@@ -55,13 +47,13 @@ export const SignIn = () => {
           <Input
             type={"password"}
             placeholder={"Пароль"}
-            onChange={(e) => onChange(e)}
+            onChange={handleChange}
             icon={"ShowIcon"}
-            value={form.password}
+            value={values.password}
             name={"password"}
             error={false}
             ref={passwordRef}
-            onIconClick={(e) => showPassword(e)}
+            onIconClick={showPassword}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="mb-6"
@@ -81,6 +73,12 @@ export const SignIn = () => {
           <Link to="/forgot-password" className={`text text_type_main-default ${styles.link}`}>
             Восстановить пароль
           </Link>
+        </p>
+        <p
+          style={authFailed ? { visibility: "inherit" } : { visibility: "hidden" }}
+          className="text text_type_main-default text_color_inactive mt-4"
+        >
+          {message}
         </p>
       </div>
     </div>
