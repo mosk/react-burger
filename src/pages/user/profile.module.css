@@ -1,0 +1,31 @@
+.container {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 20px;
+	padding-top: 120px;
+}
+
+.content {
+	width: 100%;
+	min-width: 33%;
+	max-width: 480px;
+}
+
+.form {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.button--submit {
+	margin: 0;
+}
+
+.button--reset {
+	margin: 0;
+}

@@ -1,0 +1,22 @@
+.content {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+}
+
+.content>* {
+	width: 50%;
+}
+
+@media (max-width: 1280px) {
+	.content {
+		flex-wrap: wrap;
+	}
+
+	.content>* {
+		width: 100%;
+	}
+}

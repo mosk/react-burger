@@ -1,8 +1,4 @@
-import {
-  INGREDIENTS_REQUEST,
-  INGREDIENTS_SUCCESS,
-  INGREDIENTS_FAILED,
-} from "../actions/ingredients";
+import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED } from "../actions/ingredients";
 
 const initialState = {
   items: [],

@@ -1,42 +1,128 @@
-import React from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import ErrorBoundary from "../../utils/error-boundary";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { getCookie } from "../../utils/cookie";
+import { checkAuth, authRequest } from "../../services/actions/auth";
 
 import styles from "./app.module.css";
 
 import AppHeader from "../app-header/app-header";
-import BurgerIngridients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
+import IngredientDetails from "../burger-ingredients/ingredient/ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+
+import { ProtectedRoute } from "../protected-route/protected-route";
+
+import {
+  NotFound404,
+  Registration,
+  SignIn,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  Orders,
+  Home,
+  Ingredient,
+} from "../../pages";
 
 import { getItems } from "../../services/actions/ingredients";
 
 const App = () => {
-  const dispatch = useDispatch();
-  const { items, itemsRequest, itemsFailed } = useSelector(
-    (store) => store.items
-  );
+  const ModalSwitch = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    dispatch(getItems());
-  }, [dispatch]);
+    const background = location.state && location.state.background;
+
+    const onCloseHandler = () => {
+      navigate(-1);
+    };
+
+    useEffect(() => {
+      dispatch(checkAuth());
+      dispatch(getItems());
+    }, []);
+
+    return (
+      <>
+        <AppHeader />
+        <Routes location={background || location}>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound404 />} />
+          <Route path="/ingredients/:ingredientId" element={<Ingredient />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/orders"
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <SignIn />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <Registration />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <ForgotPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <ResetPassword />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        {background && (
+          <Routes>
+            <Route
+              path="/ingredients/:ingredientId"
+              element={
+                <Modal onClose={onCloseHandler} title="Детали ингредиента">
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+      </>
+    );
+  };
 
   return (
-    <div className="App">
+    <div className={styles.app}>
       <ErrorBoundary>
-        <AppHeader />
-        <DndProvider backend={HTML5Backend}>
-          <main className={styles.main}>
-            {!itemsRequest && !itemsFailed && (
-              <>
-                <BurgerIngridients data={items} />
-                <BurgerConstructor />
-              </>
-            )}
-          </main>
-        </DndProvider>
+        <BrowserRouter>
+          <ModalSwitch />
+        </BrowserRouter>
       </ErrorBoundary>
     </div>
   );
