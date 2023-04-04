@@ -1,11 +1,13 @@
+import { FC } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import styles from "./app-header.module.css";
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { TStore } from "../../types/types";
 
-const AppHeader = () => {
-  const { name } = useSelector((store) => store.auth);
+const AppHeader: FC = () => {
+  const { name } = useSelector((store: TStore) => store.auth);
   const location = useLocation();
 
   const path = location.pathname;

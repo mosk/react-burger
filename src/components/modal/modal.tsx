@@ -1,17 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, PropsWithChildren } from "react";
 import ReactDOM from "react-dom";
+import { FC } from "react";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import ModalOverlay from "./modal-overlay/modal-overlay";
 
-const modalRoot = document.getElementById("modals");
+import { TKeyboardEvent } from "../../types/types";
 
-const Modal = ({ title, onClose, children }) => {
+const modalRoot = document.getElementById("modals") as HTMLElement;
+
+interface IModalProps {
+  title: string;
+  onClose: () => void;
+}
+
+const Modal: FC<PropsWithChildren<IModalProps>> = ({ title, onClose, children }) => {
   const KEY_NAME_ESC = `Escape`;
   const KEY_EVENT_TYPE = `keyup`;
 
-  const handleEscKey = (e) => {
+  const handleEscKey = (e: TKeyboardEvent) => {
     if (e.key === KEY_NAME_ESC) {
       onClose();
     }
@@ -40,12 +47,6 @@ const Modal = ({ title, onClose, children }) => {
     </>,
     modalRoot
   );
-};
-
-Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
 };
 
 export default Modal;

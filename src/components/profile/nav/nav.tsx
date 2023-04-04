@@ -5,6 +5,8 @@ import { logoutRequest } from "../../../services/actions/auth";
 
 import styles from "./nav.module.css";
 
+import { TMouseEvent } from "../../../types/types";
+
 export const Nav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ export const Nav = () => {
   const profilePath = "/profile";
   const ordersPath = "/profile/orders";
 
-  const desc = (path) => {
+  const desc = (path: string) => {
     let desc = "";
 
     switch (path) {
@@ -35,9 +37,9 @@ export const Nav = () => {
     return desc;
   };
 
-  const onLogoutHandler = (e) => {
+  const onLogoutHandler = (e: TMouseEvent) => {
     e.preventDefault();
-    dispatch(logoutRequest()).then(navigate("/login", { replace: true }));
+    dispatch(logoutRequest() as any).then(navigate("/login", { replace: true }));
   };
 
   return (
@@ -70,11 +72,7 @@ export const Nav = () => {
           </NavLink>
         </li>
         <li className={styles.list__item}>
-          <button
-            type="button"
-            className={`${styles.link} text text_type_main-medium`}
-            onClick={(e) => onLogoutHandler(e)}
-          >
+          <button type="button" className={`${styles.link} text text_type_main-medium`} onClick={onLogoutHandler}>
             Выход
           </button>
         </li>

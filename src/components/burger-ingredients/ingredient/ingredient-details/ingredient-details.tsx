@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styles from "./ingredient-details.module.css";
+import { TIngredient, TStore } from "../../../../types/types";
 
-const IngredientDetails = () => {
+type TIngredientCurrent = TIngredient | null;
+
+const IngredientDetails: FC = () => {
   const { ingredientId } = useParams();
-  const { items } = useSelector((store) => store.items);
-  const [item, setItem] = useState(null);
+  const { items } = useSelector((store: TStore) => store.items);
+  const [item, setItem] = useState<TIngredientCurrent>(null);
 
   useEffect(() => {
     if (ingredientId) {
-      setItem(items.find((ing) => ing["_id"] === ingredientId));
+      setItem(items.find((ing: TIngredient) => ing["_id"] === ingredientId));
     }
   }, [ingredientId, items, item]);
 
