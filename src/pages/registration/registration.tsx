@@ -1,16 +1,14 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
 import { showPassword } from "../../utils/showPassword";
-
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-
 import { registerRequest } from "../../services/actions/auth";
-
 import styles from "./registration.module.css";
+import { TFormEvent } from "../../types/types";
 
-export const Registration = () => {
+export const Registration: FC = () => {
   const dispatch = useDispatch();
   const { values, handleChange } = useForm({
     email: "",
@@ -22,9 +20,9 @@ export const Registration = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = (e: TFormEvent) => {
     e.preventDefault();
-    dispatch(registerRequest(values));
+    dispatch(registerRequest(values) as any);
   };
 
   return (

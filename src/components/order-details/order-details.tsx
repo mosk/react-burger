@@ -8,28 +8,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { getOrderID } from "../../services/actions/order";
 import { TStore, TIngredient } from "../../types/types";
 
+interface IItemsInConstructor {
+  bun?: TIngredient;
+  ingredients?: TIngredient[];
+}
+
 const OrderDetails: FC = () => {
   const { orderID, orderRequest, orderFailed } = useSelector((store: TStore) => store.order);
-  const { bun, ingredients } = useSelector((store: TStore) => store.itemsInConstructor);
+  const { bun, ingredients }: IItemsInConstructor = useSelector((store: TStore) => store.itemsInConstructor);
   const dispatch = useDispatch();
 
-  const getItemsID = (itemsList: TIngredient[]): string[] | string => {
-    return itemsList.map((item) => item._id);
+  const getItemsID = (itemsList: TIngredient[] | undefined): string[] => {
+    if (itemsList) {
+      return itemsList.map((item) => item._id);
+    } else {
+      return [];
+    }
   };
 
   useEffect(() => {
     dispatch(
       getOrderID({
         ingredients: [bun, bun, ...getItemsID(ingredients)],
-      }) as any
+      } as any) as any
     );
   }, [dispatch, ingredients, bun]);
-
-  // React.useEffect(() => {
-  //   if (orderID || !orderFailed) {
-  //     dispatch({type: CONSTRUCTOR_RESET});
-  //   }
-  // }, [dispatch, orderID, orderFailed]);
 
   const success = () => {
     return (

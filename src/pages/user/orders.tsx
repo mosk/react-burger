@@ -1,8 +1,8 @@
+import { FC } from "react";
 import { Nav } from "../../components/profile/nav/nav";
-
 import styles from "./orders.module.css";
 
-export const Orders = () => {
+export const Orders: FC = () => {
   return (
     <main className={styles.container}>
       <Nav />

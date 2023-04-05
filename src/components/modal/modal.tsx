@@ -1,6 +1,5 @@
-import { useEffect, PropsWithChildren } from "react";
+import { useEffect, FC, PropsWithChildren } from "react";
 import ReactDOM from "react-dom";
-import { FC } from "react";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "./modal-overlay/modal-overlay";

@@ -1,26 +1,24 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
 import { showPassword } from "../../utils/showPassword";
-
 import { passwordResetRequest } from "../../services/actions/auth";
-
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-
 import styles from "./forgot-password.module.css";
+import { TFormEvent } from "../../types/types";
 
-export const ForgotPassword = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+export const ForgotPassword: FC = () => {
+  const dispatch = useDispatch() as any;
+  const navigate = useNavigate() as any;
   const { values, handleChange } = useForm({
     email: "",
   });
 
   const emailRef = useRef(null);
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = (e: TFormEvent) => {
     e.preventDefault();
     dispatch(passwordResetRequest(values)).then(() => navigate("/reset-password"));
   };

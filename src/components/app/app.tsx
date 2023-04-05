@@ -53,7 +53,7 @@ const App = () => {
           <Route
             path="/profile"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyUnAuth={false}>
                 <Profile />
               </ProtectedRoute>
             }
@@ -61,7 +61,7 @@ const App = () => {
           <Route
             path="/profile/orders"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyUnAuth={false}>
                 <Orders />
               </ProtectedRoute>
             }

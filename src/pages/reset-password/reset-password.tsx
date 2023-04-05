@@ -1,17 +1,15 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
 import { showPassword } from "../../utils/showPassword";
-
 import { passwordChangeRequest } from "../../services/actions/auth";
-
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-
 import styles from "./reset-password.module.css";
+import { TFormEvent } from "../../types/types";
 
-export const ResetPassword = () => {
+export const ResetPassword: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { values, handleChange } = useForm({
@@ -22,9 +20,9 @@ export const ResetPassword = () => {
   const codeRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = (e: TFormEvent) => {
     e.preventDefault();
-    dispatch(passwordChangeRequest(values)).then(() => navigate("/"));
+    dispatch(passwordChangeRequest(values) as any).then(() => navigate("/"));
   };
 
   return (
