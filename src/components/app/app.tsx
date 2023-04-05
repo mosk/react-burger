@@ -1,19 +1,17 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import ErrorBoundary from "../../utils/error-boundary";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-import { getCookie } from "../../utils/cookie";
-import { checkAuth, authRequest } from "../../services/actions/auth";
+import ErrorBoundary from "../../utils/error-boundary";
+
+import { checkAuth } from "../../services/actions/auth";
 
 import styles from "./app.module.css";
 
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../burger-ingredients/ingredient/ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
-
 import { ProtectedRoute } from "../protected-route/protected-route";
-
 import {
   NotFound404,
   Registration,
@@ -41,9 +39,9 @@ const App = () => {
     };
 
     useEffect(() => {
-      dispatch(checkAuth());
-      dispatch(getItems());
-    }, []);
+      dispatch(checkAuth() as any);
+      dispatch(getItems() as any);
+    }, [dispatch]);
 
     return (
       <>
@@ -55,7 +53,7 @@ const App = () => {
           <Route
             path="/profile"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyUnAuth={false}>
                 <Profile />
               </ProtectedRoute>
             }
@@ -63,7 +61,7 @@ const App = () => {
           <Route
             path="/profile/orders"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyUnAuth={false}>
                 <Orders />
               </ProtectedRoute>
             }

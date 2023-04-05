@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, FC, ReactNode } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDrop } from "react-dnd";
@@ -12,16 +12,16 @@ import Ingredient from "./ingredient/ingredient";
 import { addToConstructor, CONSTRUCTOR_RESET } from "../../services/actions/constructor";
 import { ORDER_REQUEST } from "../../services/actions/order";
 
-// RIGHT
-const BurgerConstructor = () => {
-  const [modalVisibility, setVisible] = useState(false);
-  const { orderFailed } = useSelector((store) => store.order);
-  const items = useSelector((store) => store.itemsInConstructor);
-  const { isAuthChecked } = useSelector((store) => store.auth);
+import { TStore, TMouseEvent, TIngredient } from "../../types/types";
+
+const BurgerConstructor: FC = () => {
+  const [modalVisibility, setVisible] = useState<boolean>(false);
+  const { orderFailed } = useSelector((store: TStore) => store.order);
+  const items = useSelector((store: TStore) => store.itemsInConstructor);
+  const { isAuthChecked } = useSelector((store: TStore) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // dnd – from ings to constructor
   const [{ isHover }, dropTarget] = useDrop({
     accept: ["bun", "main", "sauce"],
     drop: (item) => {
@@ -32,27 +32,14 @@ const BurgerConstructor = () => {
     }),
   });
 
-  // dnd – move inside constructor
   const [, dropTargetList] = useDrop({
     accept: "constructorItem",
-    drop: (item) => {
-      console.log(item);
-      getDistance();
-    },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
   });
 
-  const getDistance = () => {
-    const listHeight = document.querySelector(`.${styles.list}`).offsetHeight;
-    const elHeight = document.querySelector(`.${styles.list} > *`).offsetHeight;
-
-    console.log(listHeight, elHeight);
-  };
-
-  // modal
-  const onOrderButtonClick = (e) => {
+  const onOrderButtonClick = (e: TMouseEvent): void => {
     e.preventDefault();
 
     if (isAuthChecked) {
@@ -69,7 +56,7 @@ const BurgerConstructor = () => {
     }
   };
 
-  const handleCloseModal = (e) => {
+  const handleCloseModal = (): void => {
     setVisible(false);
 
     !orderFailed &&
@@ -78,12 +65,15 @@ const BurgerConstructor = () => {
       });
   };
 
-  const getPrice = useMemo(() => {
-    return (items.bun ? items.bun.price * 2 : 0) + items.ingredients.reduce((sum, item) => sum + item.price, 0);
+  const getPrice = useMemo((): number => {
+    return (
+      (items.bun ? items.bun.price * 2 : 0) +
+      items.ingredients.reduce((sum: number, item: TIngredient) => sum + item.price, 0)
+    );
   }, [items]);
 
-  const getIngredients = () => {
-    const res = items.ingredients.map((item, i) => <Ingredient ingredient={item} key={item.id} />);
+  const getIngredients = (): ReactNode => {
+    const res = items.ingredients.map((item: TIngredient, i: number) => <Ingredient ingredient={item} key={item.id} />);
 
     return res;
   };
@@ -141,7 +131,13 @@ const BurgerConstructor = () => {
             </>
           )}
         </p>
-        <Button htmlType="button" type="primary" size="large" onClick={onOrderButtonClick} disabled={!items.bun}>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={(e) => onOrderButtonClick(e)}
+          disabled={!items.bun}
+        >
           Оформить заказ
         </Button>
         {modalVisibility && (

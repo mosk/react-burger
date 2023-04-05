@@ -1,19 +1,15 @@
-import { useState, useRef } from "react";
+import { useState, useRef, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
-import { loginRequest, refreshUserRequest } from "../../services/actions/auth";
-
+import { refreshUserRequest } from "../../services/actions/auth";
 import Loader from "../../components/loader/loader";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Nav } from "../../components/profile/nav/nav";
-
 import styles from "./profile.module.css";
+import { TStore, TFormEvent, TInputEvent } from "../../types/types";
 
-export const Profile = () => {
+export const Profile: FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { request, authFailed, email, name, message, isAuthChecked } = useSelector((store) => store.auth);
+  const { authFailed, email, name, message, isAuthChecked } = useSelector((store: TStore) => store.auth);
   const [form, setForm] = useState({
     name: name,
     email: email,
@@ -25,20 +21,25 @@ export const Profile = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const onChange = (e: TInputEvent) => {
+    type TTarget = {
+      name?: any;
+      value?: string;
+    };
+
+    setForm({ ...form, [(e.target as TTarget).name]: (e.target as TTarget).value });
 
     if (email !== form.email || name !== form.name) {
       setButtons(true);
     }
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = (e: TFormEvent) => {
     e.preventDefault();
-    dispatch(refreshUserRequest(form));
+    dispatch(refreshUserRequest(form) as any);
   };
 
-  const onResetHandler = (e) => {
+  const onResetHandler = (e: TFormEvent) => {
     e.preventDefault();
     setForm({ ...form, name, email, password: "" });
   };
@@ -52,7 +53,7 @@ export const Profile = () => {
           <Nav />
           <section className={styles.content}>
             <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">Персональные данные</h2>
-            <form className={styles.form} onSubmit={(e) => onSubmitHandler(e)}>
+            <form className={styles.form} onSubmit={(e) => onSubmitHandler(e)} onReset={(e) => onResetHandler(e)}>
               <Input
                 type={"text"}
                 placeholder={"Имя"}
@@ -105,10 +106,9 @@ export const Profile = () => {
                 Сохранить
               </Button>
               <Button
-                htmlType="button"
+                htmlType="reset"
                 type="primary"
                 size="large"
-                onClick={(e) => onResetHandler(e)}
                 disabled={!show}
                 extraClass={styles["button--reset"]}
               >

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
 
@@ -7,16 +7,18 @@ import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burg
 
 import { CONSTRUCTOR_DELETE, CONSTRUCTOR_REORDER } from "../../../services/actions/constructor";
 
-import PropTypes from "prop-types";
-import { TYPE_INGREDIENT } from "../../../utils/prop-types";
+import { TIngredient } from "../../../types/types";
 
-// RIGHT
-const Ingredient = ({ ingredient }) => {
+interface IIngredientProps {
+  ingredient: TIngredient;
+}
+
+const Ingredient: FC<IIngredientProps> = ({ ingredient }) => {
   const { id, name, price, image } = ingredient;
 
   const dispatch = useDispatch();
 
-  const handleDeleteItem = (item) => {
+  const handleDeleteItem = (item: TIngredient): void => {
     dispatch({
       type: CONSTRUCTOR_DELETE,
       payload: item,
@@ -25,7 +27,6 @@ const Ingredient = ({ ingredient }) => {
 
   const ref = useRef(null);
 
-  // dnd – move inside constructor
   const [{ isDrag }, drag] = useDrag({
     type: "SORT_ITEM",
     item: () => {
@@ -41,13 +42,13 @@ const Ingredient = ({ ingredient }) => {
     collect: (monitor) => ({
       handlerId: monitor.getHandlerId(),
     }),
-    drop: (item, monitor) => {
+    drop: (item: any, monitor) => {
       if (!ref.current) {
         return;
       }
 
-      const dragId = item.id;
-      const hoverId = id;
+      const dragId: string | unknown = item.id;
+      const hoverId: string | unknown = id;
 
       if (dragId === hoverId) {
         return;
@@ -79,10 +80,6 @@ const Ingredient = ({ ingredient }) => {
       />
     </li>
   );
-};
-
-Ingredient.propTypes = {
-  ingredient: PropTypes.shape(TYPE_INGREDIENT).isRequired,
 };
 
 export default Ingredient;

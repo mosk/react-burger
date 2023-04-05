@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
@@ -5,18 +6,20 @@ import { logoutRequest } from "../../../services/actions/auth";
 
 import styles from "./nav.module.css";
 
-export const Nav = () => {
+import { TMouseEvent } from "../../../types/types";
+
+export const Nav: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   const path = location.pathname;
 
-  const profilePath = "/profile";
-  const ordersPath = "/profile/orders";
+  const profilePath: string = "/profile";
+  const ordersPath: string = "/profile/orders";
 
-  const desc = (path) => {
-    let desc = "";
+  const desc = (path: string) => {
+    let desc: string = "";
 
     switch (path) {
       case profilePath:
@@ -35,9 +38,9 @@ export const Nav = () => {
     return desc;
   };
 
-  const onLogoutHandler = (e) => {
+  const onLogoutHandler = (e: TMouseEvent): void => {
     e.preventDefault();
-    dispatch(logoutRequest()).then(navigate("/login", { replace: true }));
+    dispatch(logoutRequest() as any).then(navigate("/login", { replace: true }));
   };
 
   return (
@@ -70,11 +73,7 @@ export const Nav = () => {
           </NavLink>
         </li>
         <li className={styles.list__item}>
-          <button
-            type="button"
-            className={`${styles.link} text text_type_main-medium`}
-            onClick={(e) => onLogoutHandler(e)}
-          >
+          <button type="button" className={`${styles.link} text text_type_main-medium`} onClick={onLogoutHandler}>
             Выход
           </button>
         </li>

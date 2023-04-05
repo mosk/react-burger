@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
@@ -7,14 +7,15 @@ import styles from "./burger-ingredients.module.css";
 import Tabs from "../tabs/tabs";
 import Ingredient from "./ingredient/ingredient";
 
-import PropTypes from "prop-types";
-import { TYPE_INGREDIENT } from "../../utils/prop-types";
+import { TIngredient } from "../../types/types";
 
-// LEFT
-const BurgerIngredients = ({ data }) => {
+interface BurgerIngredientsProps {
+  data: TIngredient[];
+}
+
+const BurgerIngredients: FC<BurgerIngredientsProps> = ({ data }) => {
   const location = useLocation();
 
-  // tabs
   const [currentTab, setCurrentTab] = useState("bun");
 
   const [bunsRef, inViewBuns] = useInView({
@@ -37,7 +38,6 @@ const BurgerIngredients = ({ data }) => {
     }
   }, [inViewBuns, inViewSauces, inViewMains]);
 
-  // ingredients data
   const buns = useMemo(() => {
     const bunsList = data
       .filter((item) => item.type === "bun")
@@ -102,11 +102,6 @@ const BurgerIngredients = ({ data }) => {
       </div>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape(TYPE_INGREDIENT).isRequired), PropTypes.array])
-    .isRequired,
 };
 
 export default BurgerIngredients;

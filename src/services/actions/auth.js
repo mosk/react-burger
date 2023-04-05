@@ -24,14 +24,9 @@ export const registerRequest = (form) => (dispatch) => {
   });
   return request(registerPath, {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
     body: JSON.stringify({
       email: form.email,
       password: form.password,
@@ -66,14 +61,9 @@ export const loginRequest = (form) => (dispatch) => {
   });
   return request(loginPath, {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
     body: JSON.stringify({
       email: form.email,
       password: form.password,
@@ -110,8 +100,6 @@ export const authRequest = () => (dispatch) => {
     headers: {
       authorization: `Bearer ${getCookie("token")}`,
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
   })
     .then((res) => {
       dispatch({
@@ -137,15 +125,10 @@ export const refreshUserRequest = (form) => (dispatch) => {
   });
   return request(authPath, {
     method: "PATCH",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${getCookie("token")}`,
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
     body: JSON.stringify({
       name: form.name,
       email: form.email,
@@ -176,14 +159,9 @@ export const logoutRequest = () => (dispatch) => {
   });
   return request(logoutPath, {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
     body: JSON.stringify({
       token: getCookie("refreshToken"),
     }),
@@ -209,14 +187,9 @@ export const passwordResetRequest = (form) => (dispatch) => {
   });
   return request(passwordResetPath, {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
     body: JSON.stringify({
       email: form.email,
     }),
@@ -234,14 +207,9 @@ export const passwordChangeRequest = (form) => (dispatch) => {
   });
   return request(passwordChangePath, {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
     body: JSON.stringify({
       email: form.email,
       token: form.token,
