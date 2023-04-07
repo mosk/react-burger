@@ -1,10 +1,7 @@
 import { request } from "../../utils/burger-api";
+import { INGREDIENTS_FAILED, INGREDIENTS_SUCCESS, INGREDIENTS_REQUEST } from "../constants/ingredients";
 
-export const INGREDIENTS_REQUEST = "INGREDIENTS_REQUEST";
-export const INGREDIENTS_SUCCESS = "INGREDIENTS_SUCCESS";
-export const INGREDIENTS_FAILED = "INGREDIENTS_FAILED";
-
-export const getItems = () => (dispatch) => {
+export const getItems = () => (dispatch: any) => {
   dispatch({
     type: INGREDIENTS_REQUEST,
   });

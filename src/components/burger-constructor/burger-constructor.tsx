@@ -9,8 +9,9 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import Ingredient from "./ingredient/ingredient";
 
-import { addToConstructor, CONSTRUCTOR_RESET } from "../../services/actions/constructor";
-import { ORDER_REQUEST } from "../../services/actions/order";
+import { addToConstructor } from "../../services/actions/constructor";
+import { ORDER_REQUEST } from "../../services/constants/order";
+import { CONSTRUCTOR_RESET } from "../../services/constants/constructor";
 
 import { TStore, TMouseEvent, TIngredient } from "../../types/types";
 
@@ -25,7 +26,7 @@ const BurgerConstructor: FC = () => {
   const [{ isHover }, dropTarget] = useDrop({
     accept: ["bun", "main", "sauce"],
     drop: (item) => {
-      dispatch(addToConstructor(item));
+      dispatch(addToConstructor(item as TIngredient));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),

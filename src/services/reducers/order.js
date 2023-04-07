@@ -1,4 +1,4 @@
-import { ORDER_REQUEST, ORDER_SUCCESS, ORDER_FAILED } from "../actions/order";
+import { ORDER_REQUEST, ORDER_SUCCESS, ORDER_FAILED } from "../constants/order";
 
 const initialState = {
   orderID: null,

@@ -1,8 +1,5 @@
 import { request } from "../../utils/burger-api";
-
-export const ORDER_REQUEST = "ORDER_REQUEST";
-export const ORDER_SUCCESS = "ORDER_SUCCESS";
-export const ORDER_FAILED = "ORDER_FAILED";
+import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../constants/order";
 
 const list = {
   ingredients: [],
@@ -10,7 +7,7 @@ const list = {
 
 export const getOrderID =
   (orderIngredients = list) =>
-  (dispatch) => {
+  (dispatch: any) => {
     dispatch({
       type: ORDER_REQUEST,
     });

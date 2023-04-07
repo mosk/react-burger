@@ -1,9 +1,4 @@
-import {
-  CONSTRUCTOR_ADD,
-  CONSTRUCTOR_DELETE,
-  CONSTRUCTOR_REORDER,
-  CONSTRUCTOR_RESET,
-} from "../actions/constructor";
+import { CONSTRUCTOR_ADD, CONSTRUCTOR_DELETE, CONSTRUCTOR_REORDER, CONSTRUCTOR_RESET } from "../constants/constructor";
 
 const initialState = {
   bun: null,
@@ -36,9 +31,7 @@ export const constructorReducer = (state = initialState, action) => {
       }
       return {
         ...state,
-        ingredients: [
-          ...state.ingredients.filter((item) => item.id !== action.payload.id),
-        ],
+        ingredients: [...state.ingredients.filter((item) => item.id !== action.payload.id)],
       };
     }
     case CONSTRUCTOR_REORDER: {
@@ -51,11 +44,7 @@ export const constructorReducer = (state = initialState, action) => {
         .map((item, i) => (item.id === action.payload.to ? i : null))
         .filter((item) => item !== null)[0];
 
-      ingredients[hoveredNumber] = ingredients.splice(
-        draggedNumber,
-        1,
-        ingredients[hoveredNumber]
-      )[0];
+      ingredients[hoveredNumber] = ingredients.splice(draggedNumber, 1, ingredients[hoveredNumber])[0];
 
       return {
         ...state,
