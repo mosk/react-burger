@@ -1,17 +1,17 @@
 import { useMemo, FC } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../../utils/hooks";
 import { useDrag } from "react-dnd";
 import styles from "./ingredient.module.css";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { TIngredient, TStore } from "../../../types/types";
+import { TIngredient } from "../../../types/types";
 
 interface IIngredientProps {
   data: TIngredient;
 }
 
 const Ingredient: FC<IIngredientProps> = ({ data }) => {
-  const items = useSelector((store: TStore) => store.itemsInConstructor);
+  const items = useSelector((store) => store.itemsInConstructor);
 
   const getIngAmount = useMemo((): number => {
     const ingAll: TIngredient[] = [items.bun, items.bun, ...items.ingredients];

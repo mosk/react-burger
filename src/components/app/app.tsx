@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 import ErrorBoundary from "../../utils/error-boundary";
@@ -39,8 +39,8 @@ const App = () => {
     };
 
     useEffect(() => {
-      dispatch(checkAuth() as any);
-      dispatch(getItems() as any);
+      dispatch(checkAuth());
+      dispatch(getItems());
     }, [dispatch]);
 
     return (

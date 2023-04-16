@@ -1,7 +1,27 @@
+import { AppDispatch, AppThunk, TIngredient } from "../../types/types";
 import { request } from "../../utils/burger-api";
 import { INGREDIENTS_FAILED, INGREDIENTS_SUCCESS, INGREDIENTS_REQUEST } from "../constants/ingredients";
 
-export const getItems = () => (dispatch: any) => {
+export interface IGetIngredientsFailedAction {
+  readonly type: typeof INGREDIENTS_FAILED;
+  readonly payload: string;
+}
+
+export interface IGetIngredientsSuccessAction {
+  readonly type: typeof INGREDIENTS_SUCCESS;
+  readonly payload: TIngredient[];
+}
+
+export interface IGetIngredientsRequestAction {
+  readonly type: typeof INGREDIENTS_REQUEST;
+}
+
+export type TGetIngredientsActions =
+  | IGetIngredientsFailedAction
+  | IGetIngredientsSuccessAction
+  | IGetIngredientsRequestAction;
+
+export const getItems: AppThunk = () => (dispatch: AppDispatch) => {
   dispatch({
     type: INGREDIENTS_REQUEST,
   });
@@ -12,10 +32,10 @@ export const getItems = () => (dispatch: any) => {
         payload: data.data,
       });
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       dispatch({
         type: INGREDIENTS_FAILED,
-        payload: err,
+        payload: err.toString(),
       });
     });
 };

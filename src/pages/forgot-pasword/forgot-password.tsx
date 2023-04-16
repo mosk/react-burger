@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
@@ -10,8 +10,8 @@ import styles from "./forgot-password.module.css";
 import { TFormEvent } from "../../types/types";
 
 export const ForgotPassword: FC = () => {
-  const dispatch = useDispatch() as any;
-  const navigate = useNavigate() as any;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { values, handleChange } = useForm({
     email: "",
   });

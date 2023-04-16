@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { Link } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
 import { showPassword } from "../../utils/showPassword";

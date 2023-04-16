@@ -1,5 +1,5 @@
 import { useState, useMemo, FC, ReactNode } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { useNavigate } from "react-router-dom";
 import { useDrop } from "react-dnd";
 
@@ -13,13 +13,13 @@ import { addToConstructor } from "../../services/actions/constructor";
 import { ORDER_REQUEST } from "../../services/constants/order";
 import { CONSTRUCTOR_RESET } from "../../services/constants/constructor";
 
-import { TStore, TMouseEvent, TIngredient } from "../../types/types";
+import { TMouseEvent, TIngredient } from "../../types/types";
 
 const BurgerConstructor: FC = () => {
   const [modalVisibility, setVisible] = useState<boolean>(false);
-  const { orderFailed } = useSelector((store: TStore) => store.order);
-  const items = useSelector((store: TStore) => store.itemsInConstructor);
-  const { isAuthChecked } = useSelector((store: TStore) => store.auth);
+  const { orderFailed } = useSelector((store) => store.order);
+  const items = useSelector((store) => store.itemsInConstructor);
+  const { isAuthChecked } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

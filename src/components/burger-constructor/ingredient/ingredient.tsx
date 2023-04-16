@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../../utils/hooks";
 import { useDrag, useDrop } from "react-dnd";
 import styles from "./ingredient.module.css";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";

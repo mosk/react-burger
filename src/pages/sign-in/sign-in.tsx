@@ -1,17 +1,17 @@
 import { FC, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
 import { showPassword } from "../../utils/showPassword";
 import { loginRequest } from "../../services/actions/auth";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./sign-in.module.css";
-import { TStore, TFormEvent } from "../../types/types";
+import { TFormEvent } from "../../types/types";
 
 export const SignIn: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { authFailed, message } = useSelector((store: TStore) => store.auth);
+  const { authFailed, message } = useSelector((store) => store.auth);
   const { values, handleChange } = useForm({
     email: "",
     password: "",

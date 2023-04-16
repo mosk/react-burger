@@ -1,15 +1,15 @@
 import { useState, useRef, FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { refreshUserRequest } from "../../services/actions/auth";
 import Loader from "../../components/loader/loader";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Nav } from "../../components/profile/nav/nav";
 import styles from "./profile.module.css";
-import { TStore, TFormEvent, TInputEvent } from "../../types/types";
+import { TFormEvent, TInputEvent } from "../../types/types";
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();
-  const { authFailed, email, name, message, isAuthChecked } = useSelector((store: TStore) => store.auth);
+  const { authFailed, email, name, message, isAuthChecked } = useSelector((store) => store.auth);
   const [form, setForm] = useState({
     name: name,
     email: email,

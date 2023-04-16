@@ -1,14 +1,14 @@
 import { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../../../utils/hooks";
 import { useParams } from "react-router";
 import styles from "./ingredient-details.module.css";
-import { TIngredient, TStore } from "../../../../types/types";
+import { TIngredient } from "../../../../types/types";
 
 type TIngredientCurrent = TIngredient | null;
 
 const IngredientDetails: FC = () => {
   const { ingredientId } = useParams();
-  const { items } = useSelector((store: TStore) => store.items);
+  const { items } = useSelector((store) => store.items);
   const [item, setItem] = useState<TIngredientCurrent>(null);
 
   useEffect(() => {
