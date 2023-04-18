@@ -44,8 +44,8 @@ const Ingredient: FC<IIngredientProps> = ({ ingredient }) => {
         return;
       }
 
-      const dragId: string | unknown = item.id;
-      const hoverId: string | unknown = id;
+      const dragId: string = item.id;
+      const hoverId: string = id as string;
 
       if (dragId === hoverId) {
         return;

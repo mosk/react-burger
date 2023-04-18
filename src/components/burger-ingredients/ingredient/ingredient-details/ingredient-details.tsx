@@ -12,8 +12,10 @@ const IngredientDetails: FC = () => {
   const [item, setItem] = useState<TIngredientCurrent>(null);
 
   useEffect(() => {
-    if (ingredientId) {
-      setItem(items.find((ing: TIngredient) => ing["_id"] === ingredientId));
+    const currentItem = items.find((ing: TIngredient) => ing["_id"] === ingredientId);
+
+    if (typeof currentItem !== "undefined") {
+      setItem(currentItem);
     }
   }, [ingredientId, items, item]);
 

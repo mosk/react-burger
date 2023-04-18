@@ -1,4 +1,4 @@
-import { ThunkAction } from "redux-thunk";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { Action, ActionCreator } from "redux";
 import { store } from "../services/store";
 import { TAuthActions } from "../services/actions/auth";
@@ -36,6 +36,11 @@ export type TCustomResponse = Body &
     message: string;
   }>;
 
+export type TUserRegData = {
+  name: string;
+  email: string;
+};
+
 export type TUserData = Partial<{
   name: string;
   email: string;
@@ -51,31 +56,32 @@ export type TTokenData = Partial<{
 export type TResponseData = TUserData & TTokenData;
 
 // State
-export type TAuthState = Partial<{
+export type TAuthState = {
   request: boolean;
   email: string;
   name: string;
   authFailed: boolean;
   message: string;
   isAuthChecked: boolean;
-}>;
+};
 
-export type TConstructorState = Partial<{
-  bun: TIngredient | number;
-  ingredients: TIngredient[] | [];
-}>;
+export type TConstructorState = {
+  bun?: TIngredient;
+  ingredients: TIngredient[];
+};
 
-export type TIngredientsState = Partial<{
+export type TIngredientsState = {
   items: TIngredient[];
   itemsRequest: boolean;
   itemsFailed: boolean;
-}>;
+  message: string;
+};
 
-export type TOrderState = Partial<{
-  orderID: string | null;
+export type TOrderState = {
+  orderID: string;
   orderRequest: boolean;
   orderFailed: boolean;
-}>;
+};
 
 export type TAppActions = TAuthActions | TConstructorActions | TGetIngredientsActions | TOrderActions;
 
@@ -83,6 +89,6 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TAppActions>>;
 
-export type AppThunkAction<TReturn = void> = ThunkAction<TReturn, RootState, unknown, TAppActions>;
+// export type AppThunkAction<TReturn = void> = ThunkAction<TReturn, RootState, unknown, TAppActions>;
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<RootState, never, TAppActions>;

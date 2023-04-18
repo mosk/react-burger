@@ -2,16 +2,17 @@ import { TIngredientsState } from "../../types/types";
 import { TGetIngredientsActions } from "../actions/ingredients";
 import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED } from "../constants/ingredients";
 
-const ingredientsInitialState = {
+const ingredientsInitialState: TIngredientsState = {
   items: [],
   itemsRequest: false,
   itemsFailed: false,
+  message: "",
 };
 
 export const ingredientsReducer = (
   state: TIngredientsState = ingredientsInitialState,
   action: TGetIngredientsActions
-) => {
+): TIngredientsState => {
   switch (action.type) {
     case INGREDIENTS_REQUEST: {
       return {
@@ -32,7 +33,7 @@ export const ingredientsReducer = (
         ...state,
         itemsRequest: false,
         itemsFailed: true,
-        items: action.payload,
+        message: action.payload,
       };
     }
     default: {

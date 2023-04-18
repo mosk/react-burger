@@ -1,4 +1,4 @@
-import { AppDispatch, AppThunk, TIngredient } from "../../types/types";
+import { AppDispatch, TIngredient } from "../../types/types";
 import { request } from "../../utils/burger-api";
 import { INGREDIENTS_FAILED, INGREDIENTS_SUCCESS, INGREDIENTS_REQUEST } from "../constants/ingredients";
 
@@ -21,7 +21,7 @@ export type TGetIngredientsActions =
   | IGetIngredientsSuccessAction
   | IGetIngredientsRequestAction;
 
-export const getItems: AppThunk = () => (dispatch: AppDispatch) => {
+export const getItems = () => (dispatch: AppDispatch) => {
   dispatch({
     type: INGREDIENTS_REQUEST,
   });

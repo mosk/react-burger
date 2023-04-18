@@ -1,33 +1,28 @@
 import { FC, useEffect } from "react";
-
 import styles from "./order-details.module.css";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Loader from "../loader/loader";
 import { useSelector, useDispatch } from "../../utils/hooks";
-
 import { getOrderID } from "../../services/actions/order";
-import { TIngredient } from "../../types/types";
 
 const OrderDetails: FC = () => {
   const { orderID, orderRequest, orderFailed } = useSelector((store) => store.order);
   const { bun, ingredients } = useSelector((store) => store.itemsInConstructor);
   const dispatch = useDispatch();
 
-  const getItemsID = (itemsList: TIngredient[] | undefined): string[] => {
-    if (itemsList) {
-      return itemsList.map((item) => item._id);
-    } else {
-      return [];
-    }
-  };
-
   useEffect(() => {
-    dispatch(
-      getOrderID({
-        ingredients: [bun, bun, ...getItemsID(ingredients)],
-      })
-    );
-  }, [dispatch, ingredients, bun]);
+    // const getItemsID = (itemsList: TIngredient[]): string[] => {
+    //   if (itemsList) {
+    //     return itemsList.map((item) => item._id);
+    //   } else {
+    //     return [];
+    //   }
+    // };
+    if (bun) {
+      dispatch(getOrderID([bun, bun, ...ingredients]));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ingredients, bun]);
 
   const success = () => {
     return (

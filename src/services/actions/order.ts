@@ -1,4 +1,4 @@
-import { AppDispatch, AppThunk, TIngredient } from "../../types/types";
+import { AppDispatch, TIngredient } from "../../types/types";
 import { request } from "../../utils/burger-api";
 import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../constants/order";
 
@@ -9,7 +9,7 @@ export interface IOrderFailedAction {
 
 export interface IOrderSuccessAction {
   readonly type: typeof ORDER_SUCCESS;
-  readonly payload: number;
+  readonly payload: string;
 }
 
 export interface IOrderRequestAction {
@@ -18,7 +18,7 @@ export interface IOrderRequestAction {
 
 export type TOrderActions = IOrderFailedAction | IOrderSuccessAction | IOrderRequestAction;
 
-export const getOrderID: AppThunk = (orderIngredients: TIngredient[]) => (dispatch: AppDispatch) => {
+export const getOrderID = (ingredients: TIngredient[]) => (dispatch: AppDispatch) => {
   dispatch({
     type: ORDER_REQUEST,
   });
@@ -27,7 +27,7 @@ export const getOrderID: AppThunk = (orderIngredients: TIngredient[]) => (dispat
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },
-    body: JSON.stringify(orderIngredients),
+    body: JSON.stringify(ingredients),
   })
     .then((data) => {
       dispatch({

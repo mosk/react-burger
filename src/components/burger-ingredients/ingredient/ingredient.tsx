@@ -14,7 +14,7 @@ const Ingredient: FC<IIngredientProps> = ({ data }) => {
   const items = useSelector((store) => store.itemsInConstructor);
 
   const getIngAmount = useMemo((): number => {
-    const ingAll: TIngredient[] = [items.bun, items.bun, ...items.ingredients];
+    const ingAll: TIngredient[] = [items.bun as TIngredient, items.bun as TIngredient, ...items.ingredients];
     let ingCurrent: TIngredient[] = [];
 
     if (ingAll.length > 0 && ingAll[0] !== null) {
