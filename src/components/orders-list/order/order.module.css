@@ -1,0 +1,66 @@
+.name {
+	display: block;
+	width: 100%;
+}
+
+.order {
+	display: block;
+	width: 50%;
+	order: -1;
+}
+
+.date {
+	display: block;
+	width: 50%;
+	text-align: right;
+	order: -1;
+}
+
+.status {
+	display: block;
+	padding: 0;
+	width: 100%;
+	text-align: left;
+}
+
+.list {
+	display: block;
+	padding: 0;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: nowrap;
+	width: 80%;
+}
+
+.image {
+	display: block;
+	position: relative;
+	width: 64px;
+	height: 64px;
+	background-color: #131316;
+	border: 2px solid transparent;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.image:not(:first-of-type) {
+	margin-left: -16px;
+}
+
+.image::before {
+	display: block;
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%), linear-gradient(0deg, #131316, #131316);
+}
+
+.price {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 20%;
+	margin-bottom: 0;
+}

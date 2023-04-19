@@ -4,23 +4,27 @@ import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-component
 import Loader from "../loader/loader";
 import { useSelector, useDispatch } from "../../utils/hooks";
 import { getOrderID } from "../../services/actions/order";
+import { TIngredient } from "../../types/types";
 
 const OrderDetails: FC = () => {
   const { orderID, orderRequest, orderFailed } = useSelector((store) => store.order);
   const { bun, ingredients } = useSelector((store) => store.itemsInConstructor);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // const getItemsID = (itemsList: TIngredient[]): string[] => {
-    //   if (itemsList) {
-    //     return itemsList.map((item) => item._id);
-    //   } else {
-    //     return [];
-    //   }
-    // };
-    if (bun) {
-      dispatch(getOrderID([bun, bun, ...ingredients]));
+  const getItemsID = (itemsList: TIngredient[]): string[] => {
+    if (itemsList) {
+      return itemsList.map((item) => item._id);
+    } else {
+      return [];
     }
+  };
+
+  useEffect(() => {
+    dispatch(
+      getOrderID({
+        ingredients: [bun?._id, bun?._id, ...getItemsID(ingredients)],
+      } as any)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredients, bun]);
 

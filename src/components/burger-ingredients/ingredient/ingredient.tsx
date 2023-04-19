@@ -17,8 +17,14 @@ const Ingredient: FC<IIngredientProps> = ({ data }) => {
     const ingAll: TIngredient[] = [items.bun as TIngredient, items.bun as TIngredient, ...items.ingredients];
     let ingCurrent: TIngredient[] = [];
 
-    if (ingAll.length > 0 && ingAll[0] !== null) {
-      ingCurrent = ingAll.filter((ing) => ing._id === data._id);
+    if (ingAll.length > 0 && items.bun !== undefined) {
+      let res = ingAll.filter((ing) => ing._id === data._id);
+
+      if (res === undefined) {
+        return 0;
+      } else {
+        ingCurrent = res;
+      }
     }
 
     return ingCurrent.length;

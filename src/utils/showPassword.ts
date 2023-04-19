@@ -1,8 +1,8 @@
-import { TInputEvent } from '../types/types';
+import { TInputEvent } from "../types/types";
 
-export const showPassword = (e: TInputEvent):void => {
+export const showPassword = (e: TInputEvent): void => {
   e.preventDefault();
-  let inputPassword:any;
+  let inputPassword: any;
 
   if (e.currentTarget.parentNode) {
     inputPassword = e.currentTarget!.parentNode.querySelector('input[name="password"]');

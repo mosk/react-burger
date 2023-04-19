@@ -26,6 +26,18 @@ import {
 
 import { getItems } from "../../services/actions/ingredients";
 
+const ROUTES_LIST = {
+  home: "/",
+  profile: "/profile",
+  orders: "/orders",
+  login: "/login",
+  register: "/register",
+  passwordReset: "/reset-password",
+  passwordForgot: "/forgot-password",
+  ingredients: "/ingredients",
+  notFound: "*",
+};
+
 const App = () => {
   const ModalSwitch = () => {
     const location = useLocation();
@@ -47,11 +59,11 @@ const App = () => {
       <>
         <AppHeader />
         <Routes location={background || location}>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound404 />} />
-          <Route path="/ingredients/:ingredientId" element={<Ingredient />} />
+          <Route path={ROUTES_LIST.home} element={<Home />} />
+          <Route path={ROUTES_LIST.notFound} element={<NotFound404 />} />
+          <Route path={`${ROUTES_LIST.ingredients}/:ingredientId"`} element={<Ingredient />} />
           <Route
-            path="/profile"
+            path={ROUTES_LIST.profile}
             element={
               <ProtectedRoute onlyUnAuth={false}>
                 <Profile />
@@ -59,7 +71,7 @@ const App = () => {
             }
           />
           <Route
-            path="/profile/orders"
+            path={`${ROUTES_LIST.profile}${ROUTES_LIST.orders}`}
             element={
               <ProtectedRoute onlyUnAuth={false}>
                 <Orders />
@@ -67,7 +79,7 @@ const App = () => {
             }
           />
           <Route
-            path="/login"
+            path={ROUTES_LIST.login}
             element={
               <ProtectedRoute onlyUnAuth>
                 <SignIn />
@@ -75,7 +87,7 @@ const App = () => {
             }
           />
           <Route
-            path="/register"
+            path={ROUTES_LIST.register}
             element={
               <ProtectedRoute onlyUnAuth>
                 <Registration />
@@ -83,7 +95,7 @@ const App = () => {
             }
           />
           <Route
-            path="/forgot-password"
+            path={ROUTES_LIST.passwordForgot}
             element={
               <ProtectedRoute onlyUnAuth>
                 <ForgotPassword />
@@ -91,7 +103,7 @@ const App = () => {
             }
           />
           <Route
-            path="/reset-password"
+            path={ROUTES_LIST.passwordReset}
             element={
               <ProtectedRoute onlyUnAuth>
                 <ResetPassword />
@@ -102,7 +114,7 @@ const App = () => {
         {background && (
           <Routes>
             <Route
-              path="/ingredients/:ingredientId"
+              path={`${ROUTES_LIST.ingredients}/:ingredientId"`}
               element={
                 <Modal onClose={onCloseHandler} title="Детали ингредиента">
                   <IngredientDetails />

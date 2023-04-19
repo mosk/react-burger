@@ -55,6 +55,15 @@ export type TTokenData = Partial<{
 
 export type TResponseData = TUserData & TTokenData;
 
+export type TOrderData = {
+  ingredients: string[];
+  _id: string;
+  status: "done" | "pending" | "created";
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 // State
 export type TAuthState = {
   request: boolean;
