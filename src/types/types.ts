@@ -65,6 +65,12 @@ export type TOrderData = {
 };
 
 // State
+export type TWSState = {
+  wsConnected: boolean;
+  orders: TOrderData[];
+  error?: Event;
+};
+
 export type TAuthState = {
   request: boolean;
   email: string;

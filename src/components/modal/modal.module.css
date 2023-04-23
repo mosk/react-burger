@@ -33,6 +33,10 @@
   width: 100%;
 }
 
+.content>p {
+  text-align: left;
+}
+
 .button--close {
   display: block;
   position: absolute;

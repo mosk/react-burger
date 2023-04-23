@@ -7,5 +7,19 @@ import { Profile } from "./user/profile";
 import { Orders } from "./user/orders";
 import { Home } from "./home/home";
 import { Ingredient } from "./ingredient/ingredient";
+import { Order } from "./order-info/order-info";
+import { Feed } from "./feed/feed";
 
-export { NotFound404, Registration, SignIn, ForgotPassword, ResetPassword, Profile, Orders, Home, Ingredient };
+export {
+  NotFound404,
+  Registration,
+  SignIn,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  Orders,
+  Home,
+  Ingredient,
+  Order,
+  Feed,
+};

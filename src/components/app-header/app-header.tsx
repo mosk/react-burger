@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom";
 import styles from "./app-header.module.css";
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
+import { ROUTES_LIST } from "../../utils/routes";
+
 const AppHeader: FC = () => {
   const { name } = useSelector((store) => store.auth);
   const location = useLocation();
@@ -13,37 +15,37 @@ const AppHeader: FC = () => {
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
-      <a href="/" className={styles.logo}>
+      <a href={ROUTES_LIST.home} className={styles.logo}>
         <Logo />
       </a>
       <nav className={styles.nav}>
         <NavLink
-          to="/"
+          to={ROUTES_LIST.home}
           className={({ isActive }) =>
             isActive ? `${styles.button} ${styles["button--active"]} p-5 m-1` : `${styles.button} p-5 m-1`
           }
         >
-          <BurgerIcon type={path === "/" ? "primary" : "secondary"} />
+          <BurgerIcon type={path === ROUTES_LIST.home ? "primary" : "secondary"} />
           <span className="text text_type_main-default pl-2">Конструктор</span>
         </NavLink>
         <NavLink
-          to="/abracadabra"
+          to={ROUTES_LIST.feed}
           className={({ isActive }) =>
             isActive ? `${styles.button} ${styles["button--active"]} p-5 m-1` : `${styles.button} p-5 m-1`
           }
         >
-          <ListIcon type="secondary" />
+          <ListIcon type={path.includes(ROUTES_LIST.feed) ? "primary" : "secondary"} />
           <span className="text text_type_main-default pl-2">Лента заказов</span>
         </NavLink>
       </nav>
       <nav className={`${styles.nav} ${styles["nav--user"]}`}>
         <NavLink
-          to="/profile"
+          to={ROUTES_LIST.profile}
           className={({ isActive }) =>
             isActive ? `${styles.button} ${styles["button--active"]} p-5 m-1` : `${styles.button} p-5 m-1`
           }
         >
-          <ProfileIcon type={path === "/profile" ? "primary" : "secondary"} />
+          <ProfileIcon type={path.includes(ROUTES_LIST.profile) ? "primary" : "secondary"} />
           <span className="text text_type_main-default pl-2">{name ? name : "Личный кабинет"}</span>
         </NavLink>
       </nav>

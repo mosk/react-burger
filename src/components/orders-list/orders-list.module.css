@@ -5,24 +5,35 @@
 	flex-wrap: wrap;
 	width: 100%;
 	margin: 0 auto;
+	margin-bottom: 0px;
 	padding: 0;
 }
 
-.list .item {
+.item {
+	display: block;
+	width: 100%;
+	margin: 0;
+	margin-bottom: 16px;
+	list-style-type: none;
+	overflow: hidden;
+}
+
+.item__wrapper {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	flex-wrap: wrap;
 	width: 100%;
 	margin: 0;
-	margin-bottom: 16px;
 	padding: 24px;
+	color: unset;
 	background-color: #1C1C21;
 	border-radius: 40px;
 	list-style-type: none;
 	overflow: hidden;
+	text-decoration: none;
 }
 
-.list .item:last-of-type {
+.item:last-of-type {
 	margin-bottom: 0;
 }

@@ -10,6 +10,7 @@ import styles from "./app.module.css";
 
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../burger-ingredients/ingredient/ingredient-details/ingredient-details";
+import OrderInfo from "../order-info/order-info";
 import Modal from "../modal/modal";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import {
@@ -22,21 +23,12 @@ import {
   Orders,
   Home,
   Ingredient,
+  Order,
+  Feed,
 } from "../../pages";
 
 import { getItems } from "../../services/actions/ingredients";
-
-const ROUTES_LIST = {
-  home: "/",
-  profile: "/profile",
-  orders: "/orders",
-  login: "/login",
-  register: "/register",
-  passwordReset: "/reset-password",
-  passwordForgot: "/forgot-password",
-  ingredients: "/ingredients",
-  notFound: "*",
-};
+import { ROUTES_LIST } from "../../utils/routes";
 
 const App = () => {
   const ModalSwitch = () => {
@@ -60,8 +52,9 @@ const App = () => {
         <AppHeader />
         <Routes location={background || location}>
           <Route path={ROUTES_LIST.home} element={<Home />} />
+          <Route path={ROUTES_LIST.feed} element={<Feed />} />
           <Route path={ROUTES_LIST.notFound} element={<NotFound404 />} />
-          <Route path={`${ROUTES_LIST.ingredients}/:ingredientId"`} element={<Ingredient />} />
+          <Route path={`${ROUTES_LIST.ingredients}/:ingredientId`} element={<Ingredient />} />
           <Route
             path={ROUTES_LIST.profile}
             element={
@@ -78,6 +71,15 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path={`${ROUTES_LIST.profile}${ROUTES_LIST.orders}/:orderId`}
+            element={
+              <ProtectedRoute onlyUnAuth={false}>
+                <Order />
+              </ProtectedRoute>
+            }
+          />
+          <Route path={`${ROUTES_LIST.feed}/:orderId`} element={<Order />} />
           <Route
             path={ROUTES_LIST.login}
             element={
@@ -114,10 +116,34 @@ const App = () => {
         {background && (
           <Routes>
             <Route
-              path={`${ROUTES_LIST.ingredients}/:ingredientId"`}
+              path={`${ROUTES_LIST.ingredients}/:ingredientId`}
               element={
-                <Modal onClose={onCloseHandler} title="Детали ингредиента">
+                <Modal onClose={onCloseHandler} title="Детали ингредиента" hideTitle={false}>
                   <IngredientDetails />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {background && (
+          <Routes>
+            <Route
+              path={`${ROUTES_LIST.profile}${ROUTES_LIST.orders}/:orderId`}
+              element={
+                <Modal onClose={onCloseHandler} title="Детали заказа" hideTitle={true}>
+                  <OrderInfo />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {background && (
+          <Routes>
+            <Route
+              path={`${ROUTES_LIST.feed}/:orderId`}
+              element={
+                <Modal onClose={onCloseHandler} title="Детали заказа" hideTitle={true}>
+                  <OrderInfo />
                 </Modal>
               }
             />

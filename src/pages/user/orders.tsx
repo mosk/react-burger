@@ -9,7 +9,9 @@ export const Orders: FC = () => {
       <Nav />
       <section className={styles.content}>
         <h2 className="mt-10 mb-5 text text_type_main-large visually-hidden">История заказов</h2>
-        <OrdersList />
+        <div className={`${styles.order__list} custom-scroll`}>
+          <OrdersList />
+        </div>
       </section>
     </main>
   );

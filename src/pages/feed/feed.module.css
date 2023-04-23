@@ -1,0 +1,33 @@
+.container {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	width: 100%;
+	position: relative;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.feed__title {
+	display: block;
+	width: 100%;
+}
+
+.feed__list {
+	width: 100%;
+	max-width: 608px;
+	max-height: calc(100vh - 144px - 100px);
+	padding-right: 8px;
+	overflow: auto;
+}
+
+.feed__info {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	width: 100%;
+	max-width: 580px;
+}

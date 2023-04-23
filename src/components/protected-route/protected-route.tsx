@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
 
 interface IProtectedRouteProps {
@@ -8,15 +8,15 @@ interface IProtectedRouteProps {
 
 export const ProtectedRoute: FC<PropsWithChildren<IProtectedRouteProps>> = ({ onlyUnAuth, children }) => {
   const location = useLocation();
-  const navigate = useNavigate();
   const isAuth: string | undefined = getCookie("token");
 
   if (onlyUnAuth && isAuth) {
-    navigate(-1);
+    const { from } = location.state || { from: { pathname: "/" } };
+    return <Navigate to={from} />;
   }
 
   if (!onlyUnAuth && !isAuth) {
-    navigate("/login", { state: { from: location } });
+    return <Navigate to={"/login"} state={{ from: location }} />;
   }
 
   return <>{children}</>;

@@ -142,7 +142,7 @@ const BurgerConstructor: FC = () => {
           Оформить заказ
         </Button>
         {modalVisibility && (
-          <Modal onClose={handleCloseModal} title="">
+          <Modal onClose={handleCloseModal} title="Информация о заказе" hideTitle={true}>
             <OrderDetails />
           </Modal>
         )}
