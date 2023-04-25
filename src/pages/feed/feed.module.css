@@ -23,6 +23,10 @@
 	overflow: auto;
 }
 
+.feed__list [class*='order_status'] {
+	display: none;
+}
+
 .feed__info {
 	display: flex;
 	justify-content: space-between;

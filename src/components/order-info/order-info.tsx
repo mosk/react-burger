@@ -1,123 +1,71 @@
-import { FC, useEffect, useState } from "react";
-// import { useSelector } from "../../utils/hooks";
+import { FC, useEffect, useMemo, useState } from "react";
+import { useSelector } from "../../utils/hooks";
 import { useParams } from "react-router";
 import styles from "./order-info.module.css";
-import { TOrderData } from "../../types/types";
+import { TOrderData, TIngredient } from "../../types/types";
 import { FormattedDate, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const OrderInfo: FC = () => {
   const { orderId } = useParams();
-  // const { orders } = useSelector((store) => store.orders);
+  const { orders } = useSelector((store) => store.orders);
+  const { items } = useSelector((store) => store.items);
 
   const [order, setOrder] = useState({} as TOrderData);
-  const orderIngs = [];
+  const [orderIngs, setOrderIngs] = useState([] as TIngredientWithAmount[]);
+
+  type TIngredientWithAmount = TIngredient & {
+    amount: number;
+  };
 
   useEffect(() => {
-    const orders: TOrderData[] = [
-      {
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-        ],
-        _id: "192356",
-        status: "done",
-        number: 0,
-        createdAt: "2021-06-23T14:43:22.587Z",
-        updatedAt: "2021-06-23T14:43:22.603Z",
-      },
-      {
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-        ],
-        _id: "667",
-        status: "done",
-        number: 0,
-        createdAt: "2021-06-23T14:43:22.587Z",
-        updatedAt: "2021-06-23T14:43:22.603Z",
-      },
-      {
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-        ],
-        _id: "667",
-        status: "done",
-        number: 0,
-        createdAt: "2021-06-23T14:43:22.587Z",
-        updatedAt: "2021-06-23T14:43:22.603Z",
-      },
-      {
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-        ],
-        _id: "192356",
-        status: "done",
-        number: 0,
-        createdAt: "2021-06-23T14:43:22.587Z",
-        updatedAt: "2021-06-23T14:43:22.603Z",
-      },
-      {
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-        ],
-        _id: "667",
-        status: "done",
-        number: 0,
-        createdAt: "2021-06-23T14:43:22.587Z",
-        updatedAt: "2021-06-23T14:43:22.603Z",
-      },
-      {
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa093f",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0947",
-        ],
-        _id: "667",
-        status: "done",
-        number: 0,
-        createdAt: "2021-06-23T14:43:22.587Z",
-        updatedAt: "2021-06-23T14:43:22.603Z",
-      },
-    ];
-
     const currentOrder = orders.find((order: TOrderData) => order["_id"] === orderId);
 
     if (typeof currentOrder !== "undefined") {
       setOrder(currentOrder);
     }
-  }, [orderId]);
+  }, [orderId, orders]);
+
+  useEffect(() => {
+    if (items.length > 0 && order.ingredients) {
+      const getOrderIngs = () => {
+        let ings: TIngredientWithAmount[] = [];
+        let ingsIDs: string[] = [];
+
+        order.ingredients.forEach((id: string, i: number) => {
+          const res = items.filter((item) => item._id === id);
+
+          if (ingsIDs.includes(res[0]._id)) {
+            let currentIngIndex = ingsIDs.indexOf(res[0]._id);
+
+            ings[currentIngIndex].amount += ings[currentIngIndex].amount;
+          } else {
+            ingsIDs.push(res[0]._id);
+            ings.push({ ...res[0], amount: 1 });
+          }
+        });
+
+        return ings;
+      };
+
+      setOrderIngs(getOrderIngs());
+    }
+  }, [items, order]);
+
+  const getPrice = useMemo((): number => {
+    let price: number = 0;
+
+    if (orderIngs.length > 0) {
+      price = orderIngs.reduce((sum: number, item: TIngredientWithAmount) => sum + item.price * item.amount, 0);
+    }
+
+    return price;
+  }, [orderIngs]);
+
+  const statusTranslate = {
+    created: "Создан",
+    pending: "Готовится",
+    done: "Выполнен",
+  };
 
   return (
     order && (
@@ -125,7 +73,7 @@ const OrderInfo: FC = () => {
         <h3 className={`text text_type_main-medium mb-3 ${styles.order__name}`}>Death Star Starship Main бургер</h3>
         <p className={`text text_type_digits-default mb-10 ${styles.order__id}`}>#{order._id}</p>
         <span className={`text text_type_main-default text_color_success mb-15 ${styles.order__status}`}>
-          {order.status}
+          {statusTranslate[order.status]}
         </span>
         <table className={`${styles.table} mb-10`}>
           <caption className="text text_type_main-medium mb-6">Состав:</caption>
@@ -146,23 +94,23 @@ const OrderInfo: FC = () => {
             </tr>
           </thead>
           <tbody className={`${styles.table__body} custom-scroll`}>
-            {order.ingredients &&
-              order.ingredients.map((order, i) => {
+            {orderIngs &&
+              orderIngs.map((ing: TIngredientWithAmount, i: number) => {
                 return (
                   <tr className={styles.table__row} key={i}>
                     <td className={`${styles.table__td} ${styles.table__image}`}>
                       <div className={styles.image__wrapper}>
-                        <img src="https://code.s3.yandex.net/react/code/sp_1.png" alt="Флюоресцентная булка R2-D3" />
+                        <img src={ing.image} alt={ing.name} />
                       </div>
                     </td>
                     <td className={`${styles.table__td} ${styles.table__name}`}>
-                      <p className="text text_type_main-default">Флюоресцентная булка R2-D3</p>
+                      <p className="text text_type_main-default">{ing.name}</p>
                     </td>
                     <td className={`${styles.table__td} ${styles.table__amount}`}>
-                      <p className="text text_type_digits-default">2</p>
+                      <p className="text text_type_digits-default">{ing.amount}</p>
                     </td>
                     <td className={`${styles.table__td} ${styles.table__price}`}>
-                      <p className="text text_type_digits-default">20&nbsp;</p>
+                      <p className="text text_type_digits-default">{ing.price}&nbsp;</p>
                       <CurrencyIcon type="primary" />
                     </td>
                   </tr>
@@ -175,7 +123,7 @@ const OrderInfo: FC = () => {
             <FormattedDate date={new Date(order.updatedAt)} />
           </p>
           <p className={styles.order__price}>
-            <span className="text text_type_digits-default">333&nbsp;</span>
+            <span className="text text_type_digits-default">{getPrice}&nbsp;</span>
             <CurrencyIcon type="primary" />
           </p>
         </div>

@@ -29,7 +29,7 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
         ings.push(res[0]);
       });
 
-      // проверить кол-во булок – должно быть 2
+      console.log(ings);
 
       price = ings.reduce((sum: number, item: TIngredient) => sum + item.price, 0);
     }
@@ -55,6 +55,12 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
     }
   }, [items, orderIngsIDs]);
 
+  const statusTranslate = {
+    created: "Создан",
+    pending: "Готовится",
+    done: "Выполнен",
+  };
+
   return (
     <>
       <h3 className={`text text_type_main-medium ${styles.name}`}>Death Star Starship Main бургер</h3>
@@ -62,7 +68,15 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
       <p className={`text text_type_main-default text_color_inactive pb-6 ${styles.date}`}>
         <FormattedDate date={new Date(data.updatedAt)} />
       </p>
-      {showStatus && <span className={`text text_type_main-small mt-2 ${styles.status}`}>{data.status}</span>}
+      {showStatus && (
+        <span
+          className={`text text_type_main-default ${data.status === "done" ? "text_color_success" : ""} mt-2 ${
+            styles.status
+          }`}
+        >
+          {statusTranslate[data.status]}
+        </span>
+      )}
       <ul className={`mt-6 ${styles.list}`}>
         {orderIngs.length > 0 &&
           data.ingredients.map((ing: string, i: number) => {

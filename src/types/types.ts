@@ -5,6 +5,13 @@ import { TAuthActions } from "../services/actions/auth";
 import { TConstructorActions } from "../services/actions/constructor";
 import { TGetIngredientsActions } from "../services/actions/ingredients";
 import { TOrderActions } from "../services/actions/order";
+import {
+  WS_CONNECTION_START,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_ORDERS,
+} from "../services/constants/ws-orders";
 
 export type TKeyboardEvent = KeyboardEvent | React.KeyboardEvent;
 export type TMouseEvent = MouseEvent | React.MouseEvent<HTMLElement> | React.SyntheticEvent<Element, Event>;
@@ -64,10 +71,18 @@ export type TOrderData = {
   updatedAt: string;
 };
 
+export type TOrderResponse = {
+  orders: TOrderData[];
+  total: string;
+  totalToday: string;
+};
+
 // State
 export type TWSState = {
   wsConnected: boolean;
   orders: TOrderData[];
+  total: string;
+  totalToday: string;
   error?: Event;
 };
 
@@ -107,3 +122,11 @@ export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action
 // export type AppThunkAction<TReturn = void> = ThunkAction<TReturn, RootState, unknown, TAppActions>;
 
 export type AppDispatch = ThunkDispatch<RootState, never, TAppActions>;
+
+export type TWSStoreActions = {
+  wsInit: typeof WS_CONNECTION_START;
+  onOpen: typeof WS_CONNECTION_SUCCESS;
+  onClose: typeof WS_CONNECTION_CLOSED;
+  onError: typeof WS_CONNECTION_ERROR;
+  onMessage: typeof WS_GET_ORDERS;
+};
