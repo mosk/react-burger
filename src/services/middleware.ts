@@ -1,7 +1,6 @@
 import type { Middleware, MiddlewareAPI } from "redux";
-import type { TAppActions, TWSStoreActions, AppDispatch, RootState } from "../types/types";
+import type { TWSStoreActions, AppDispatch, RootState } from "../types/types";
 import { getCookie } from "../utils/cookie";
-import { TWSActions } from "./actions/ws-orders";
 
 export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
@@ -14,34 +13,36 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
 
       const token: string | undefined = getCookie("token");
 
-      if (type === wsInit && token) {
-        socket = new WebSocket(`${wsUrl}?token=${token}`);
+      if (type === wsInit) {
+        if (action.payload) {
+          socket = new WebSocket(`${wsUrl}${action.payload}`);
+        } else if (token) {
+          socket = new WebSocket(`${wsUrl}?token=${token}`);
+        }
       }
 
       if (socket) {
-        socket.onopen = (event) => {
+        socket.onopen = (event: Event) => {
           console.log(`open`);
-          // dispatch({ type: onOpen, payload: event });
+          dispatch({ type: onOpen, payload: event });
         };
 
-        socket.onerror = (event) => {
+        socket.onerror = (event: any) => {
           console.log(`error`);
-          //dispatch({ type: onError, payload: event });
+          dispatch({ type: onError, payload: event });
         };
 
-        socket.onmessage = (event) => {
+        socket.onmessage = (event: MessageEvent) => {
+          console.log(`message`);
           const { data } = event;
           const parsedData: any = JSON.parse(data);
-          const { success, ...restParsedData } = parsedData;
 
-          console.log(parsedData);
-
-          //dispatch({ type: onMessage, payload: { ...restParsedData } });
+          dispatch({ type: onMessage, payload: { ...parsedData } });
         };
 
-        socket.onclose = (event) => {
+        socket.onclose = (event: CloseEvent) => {
           console.log(`close`);
-          //dispatch({ type: onClose, payload: event });
+          dispatch({ type: onClose, payload: event });
         };
       }
 

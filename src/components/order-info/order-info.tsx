@@ -1,17 +1,30 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { useSelector } from "../../utils/hooks";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { useParams } from "react-router";
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from "../../services/constants/ws-orders";
 import styles from "./order-info.module.css";
 import { TOrderData, TIngredient } from "../../types/types";
 import { FormattedDate, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const OrderInfo: FC = () => {
+  const dispatch = useDispatch();
   const { orderId } = useParams();
   const { orders } = useSelector((store) => store.orders);
   const { items } = useSelector((store) => store.items);
 
   const [order, setOrder] = useState({} as TOrderData);
   const [orderIngs, setOrderIngs] = useState([] as TIngredientWithAmount[]);
+
+  // useEffect(() => {
+  //   if (orders.length === 0) {
+  //     dispatch({ type: WS_CONNECTION_START });
+  //   }
+
+  //   return () => {
+  //     dispatch({ type: WS_CONNECTION_CLOSED });
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [orders]);
 
   type TIngredientWithAmount = TIngredient & {
     amount: number;
@@ -70,8 +83,8 @@ const OrderInfo: FC = () => {
   return (
     order && (
       <>
-        <h3 className={`text text_type_main-medium mb-3 ${styles.order__name}`}>Death Star Starship Main бургер</h3>
-        <p className={`text text_type_digits-default mb-10 ${styles.order__id}`}>#{order._id}</p>
+        <h3 className={`text text_type_main-medium mb-3 ${styles.order__name}`}>{order.name}</h3>
+        <p className={`text text_type_digits-default mb-10 ${styles.order__id}`}>#{order.number}</p>
         <span className={`text text_type_main-default text_color_success mb-15 ${styles.order__status}`}>
           {statusTranslate[order.status]}
         </span>

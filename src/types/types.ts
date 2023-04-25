@@ -5,6 +5,7 @@ import { TAuthActions } from "../services/actions/auth";
 import { TConstructorActions } from "../services/actions/constructor";
 import { TGetIngredientsActions } from "../services/actions/ingredients";
 import { TOrderActions } from "../services/actions/order";
+import { TWSActions } from "../services/actions/ws-orders";
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_CLOSED,
@@ -66,6 +67,7 @@ export type TOrderData = {
   ingredients: string[];
   _id: string;
   status: "done" | "pending" | "created";
+  name: string;
   number: number;
   createdAt: string;
   updatedAt: string;
@@ -113,13 +115,11 @@ export type TOrderState = {
   orderFailed: boolean;
 };
 
-export type TAppActions = TAuthActions | TConstructorActions | TGetIngredientsActions | TOrderActions;
+export type TAppActions = TAuthActions | TConstructorActions | TGetIngredientsActions | TOrderActions | TWSActions;
 
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TAppActions>>;
-
-// export type AppThunkAction<TReturn = void> = ThunkAction<TReturn, RootState, unknown, TAppActions>;
 
 export type AppDispatch = ThunkDispatch<RootState, never, TAppActions>;
 

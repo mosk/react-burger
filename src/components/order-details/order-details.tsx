@@ -20,11 +20,13 @@ const OrderDetails: FC = () => {
   };
 
   useEffect(() => {
-    dispatch(
-      getOrderID({
-        ingredients: [bun?._id, bun?._id, ...getItemsID(ingredients)],
-      } as any)
-    );
+    if (bun !== undefined && ingredients.length > 0) {
+      dispatch(
+        getOrderID({
+          ingredients: [bun._id, bun._id, ...getItemsID(ingredients)],
+        } as any)
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredients, bun]);
 

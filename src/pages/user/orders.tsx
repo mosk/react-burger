@@ -1,11 +1,22 @@
-import { FC } from "react";
-import { useSelector } from "../../utils/hooks";
+import { FC, useEffect } from "react";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { Nav } from "../../components/profile/nav/nav";
 import { OrdersList } from "../../components/orders-list/orders-list";
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from "../../services/constants/ws-orders";
 import styles from "./orders.module.css";
 
 export const Orders: FC = () => {
+  const dispatch = useDispatch();
   const { orders } = useSelector((store) => store.orders);
+
+  useEffect(() => {
+    dispatch({ type: WS_CONNECTION_START });
+
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className={styles.container}>

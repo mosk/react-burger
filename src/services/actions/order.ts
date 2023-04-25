@@ -1,6 +1,7 @@
 import { AppDispatch, TIngredient } from "../../types/types";
 import { request } from "../../utils/burger-api";
 import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../constants/order";
+import { getCookie } from "../../utils/cookie";
 
 export interface IOrderFailedAction {
   readonly type: typeof ORDER_FAILED;
@@ -22,10 +23,14 @@ export const getOrderID = (ingredients: TIngredient[]) => (dispatch: AppDispatch
   dispatch({
     type: ORDER_REQUEST,
   });
+
+  console.log(ingredients);
+
   return request(`orders`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json;charset=utf-8",
+      "Content-Type": "application/json",
+      authorization: `Bearer ${getCookie("token")}`,
     },
     body: JSON.stringify(ingredients),
   })

@@ -22,14 +22,8 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
       orderIngsIDs.forEach((id: string) => {
         const res = items.filter((item) => item._id === id);
 
-        if (res[0].type === "bun") {
-          console.log(`булка!`);
-        }
-
         ings.push(res[0]);
       });
-
-      console.log(ings);
 
       price = ings.reduce((sum: number, item: TIngredient) => sum + item.price, 0);
     }
@@ -63,8 +57,8 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
 
   return (
     <>
-      <h3 className={`text text_type_main-medium ${styles.name}`}>Death Star Starship Main бургер</h3>
-      <p className={`text text_type_digits-default pb-6 ${styles.order}`}>#{data._id}</p>
+      <h3 className={`text text_type_main-medium ${styles.name}`}>{data.name}</h3>
+      <p className={`text text_type_digits-default pb-6 ${styles.order}`}>#{data.number}</p>
       <p className={`text text_type_main-default text_color_inactive pb-6 ${styles.date}`}>
         <FormattedDate date={new Date(data.updatedAt)} />
       </p>
@@ -79,6 +73,7 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
       )}
       <ul className={`mt-6 ${styles.list}`}>
         {orderIngs.length > 0 &&
+          // eslint-disable-next-line array-callback-return
           data.ingredients.map((ing: string, i: number) => {
             const ingsMax: number = 6;
             const ingsAmount: number = data.ingredients.length;

@@ -9,6 +9,7 @@ import {
 
 export interface IWSConnectionStartAction {
   readonly type: typeof WS_CONNECTION_START;
+  readonly payload?: string;
 }
 
 export interface IWSConnectionClosedAction {

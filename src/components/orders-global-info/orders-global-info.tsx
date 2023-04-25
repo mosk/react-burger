@@ -13,10 +13,10 @@ export const OrdersGlobalInfo: FC = () => {
           {orders &&
             orders
               .filter((order) => order.status === "done")
-              .map((orderDone) => {
+              .map((orderDone, i: number) => {
                 return (
-                  <li className={styles.list__item}>
-                    <span className="text text_type_digits-default text_color_success">{orderDone._id}</span>
+                  <li className={styles.list__item} key={i}>
+                    <span className="text text_type_digits-default text_color_success">{orderDone.number}</span>
                   </li>
                 );
               })}
@@ -28,10 +28,10 @@ export const OrdersGlobalInfo: FC = () => {
           {orders &&
             orders
               .filter((order) => order.status === "pending")
-              .map((orderPending) => {
+              .map((orderPending, i: number) => {
                 return (
-                  <li className={styles.list__item}>
-                    <span className="text text_type_digits-default">{orderPending._id}</span>
+                  <li className={styles.list__item} key={i}>
+                    <span className="text text_type_digits-default">{orderPending.number}</span>
                   </li>
                 );
               })}
