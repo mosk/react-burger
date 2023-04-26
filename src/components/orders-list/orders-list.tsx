@@ -4,7 +4,6 @@ import { useSelector } from "../../utils/hooks";
 import styles from "./orders-list.module.css";
 
 import { Order } from "./order/order";
-import { TOrderData } from "../../types/types";
 
 export const OrdersList: FC = () => {
   const location = useLocation();
@@ -12,7 +11,7 @@ export const OrdersList: FC = () => {
 
   return (
     <ul className={styles.list}>
-      {orders.map((data: TOrderData, i: number) => (
+      {orders.map((data, i) => (
         <li className={styles.item} key={i}>
           <Link
             to={{ pathname: `${location.pathname}/${data._id}` }}

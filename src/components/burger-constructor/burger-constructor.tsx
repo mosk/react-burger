@@ -67,14 +67,11 @@ const BurgerConstructor: FC = () => {
   };
 
   const getPrice = useMemo((): number => {
-    return (
-      (items.bun ? items.bun.price * 2 : 0) +
-      items.ingredients.reduce((sum: number, item: TIngredient) => sum + item.price, 0)
-    );
+    return (items.bun ? items.bun.price * 2 : 0) + items.ingredients.reduce((sum, item) => sum + item.price, 0);
   }, [items]);
 
   const getIngredients = (): ReactNode => {
-    const res = items.ingredients.map((item: TIngredient, i: number) => <Ingredient ingredient={item} key={item.id} />);
+    const res = items.ingredients.map((item, i) => <Ingredient ingredient={item} key={item.id} />);
 
     return res;
   };

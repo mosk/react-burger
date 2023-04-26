@@ -13,7 +13,7 @@ export const OrdersGlobalInfo: FC = () => {
           {orders &&
             orders
               .filter((order) => order.status === "done")
-              .map((orderDone, i: number) => {
+              .map((orderDone, i) => {
                 return (
                   <li className={styles.list__item} key={i}>
                     <span className="text text_type_digits-default text_color_success">{orderDone.number}</span>
@@ -28,7 +28,7 @@ export const OrdersGlobalInfo: FC = () => {
           {orders &&
             orders
               .filter((order) => order.status === "pending")
-              .map((orderPending, i: number) => {
+              .map((orderPending, i) => {
                 return (
                   <li className={styles.list__item} key={i}>
                     <span className="text text_type_digits-default">{orderPending.number}</span>

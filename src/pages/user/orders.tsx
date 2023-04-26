@@ -8,15 +8,20 @@ import styles from "./orders.module.css";
 export const Orders: FC = () => {
   const dispatch = useDispatch();
   const { orders } = useSelector((store) => store.orders);
+  const { wsConnected } = useSelector((store) => store.orders);
 
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START });
+    if (!wsConnected) {
+      dispatch({ type: WS_CONNECTION_START });
+    }
 
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
+      if (wsConnected) {
+        dispatch({ type: WS_CONNECTION_CLOSED });
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [wsConnected]);
 
   return (
     <main className={styles.container}>

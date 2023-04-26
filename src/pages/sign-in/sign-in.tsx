@@ -20,9 +20,17 @@ export const SignIn: FC = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
+  const goBack = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate("/", { replace: true });
+    }
+  };
+
   const onSubmitHandler = (e: TFormEvent) => {
     e.preventDefault();
-    dispatch(loginRequest(values) as any).then(() => navigate(-1));
+    dispatch(loginRequest(values)).then(() => goBack());
   };
 
   return (

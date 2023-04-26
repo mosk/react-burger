@@ -19,13 +19,13 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
     let price: number = 0;
 
     if (items.length > 0) {
-      orderIngsIDs.forEach((id: string) => {
+      orderIngsIDs.forEach((id) => {
         const res = items.filter((item) => item._id === id);
 
         ings.push(res[0]);
       });
 
-      price = ings.reduce((sum: number, item: TIngredient) => sum + item.price, 0);
+      price = ings.reduce((sum, item) => sum + item.price, 0);
     }
 
     return price;
@@ -36,7 +36,7 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
       const getOrderIngs = () => {
         let ings: TIngredient[] = [];
 
-        orderIngsIDs.forEach((id: string) => {
+        orderIngsIDs.forEach((id) => {
           const res = items.filter((item) => item._id === id);
 
           ings.push(res[0]);
@@ -74,7 +74,7 @@ export const Order: FC<IOrderProps> = ({ data, showStatus = true }) => {
       <ul className={`mt-6 ${styles.list}`}>
         {orderIngs.length > 0 &&
           // eslint-disable-next-line array-callback-return
-          data.ingredients.map((ing: string, i: number) => {
+          data.ingredients.map((ing, i) => {
             const ingsMax: number = 6;
             const ingsAmount: number = data.ingredients.length;
             const ingsRest: number = ingsAmount - ingsMax;

@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "../../utils/hooks";
-import { useParams } from "react-router";
+import { useParams, useLocation } from "react-router";
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from "../../services/constants/ws-orders";
 import styles from "./order-info.module.css";
 import { TOrderData, TIngredient } from "../../types/types";
@@ -8,23 +8,32 @@ import { FormattedDate, CurrencyIcon } from "@ya.praktikum/react-developer-burge
 
 const OrderInfo: FC = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { orderId } = useParams();
   const { orders } = useSelector((store) => store.orders);
   const { items } = useSelector((store) => store.items);
+  const { wsConnected } = useSelector((store) => store.orders);
 
   const [order, setOrder] = useState({} as TOrderData);
   const [orderIngs, setOrderIngs] = useState([] as TIngredientWithAmount[]);
 
-  // useEffect(() => {
-  //   if (orders.length === 0) {
-  //     dispatch({ type: WS_CONNECTION_START });
-  //   }
+  useEffect(() => {
+    console.log(location);
+    if (!wsConnected && location.state === null) {
+      if (location.pathname.includes("feed")) {
+        dispatch({ type: WS_CONNECTION_START, payload: "/all" });
+      } else {
+        dispatch({ type: WS_CONNECTION_START });
+      }
+    }
 
-  //   return () => {
-  //     dispatch({ type: WS_CONNECTION_CLOSED });
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [orders]);
+    return () => {
+      if (location.state === null) {
+        dispatch({ type: WS_CONNECTION_CLOSED });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wsConnected]);
 
   type TIngredientWithAmount = TIngredient & {
     amount: number;
@@ -44,7 +53,7 @@ const OrderInfo: FC = () => {
         let ings: TIngredientWithAmount[] = [];
         let ingsIDs: string[] = [];
 
-        order.ingredients.forEach((id: string, i: number) => {
+        order.ingredients.forEach((id, i) => {
           const res = items.filter((item) => item._id === id);
 
           if (ingsIDs.includes(res[0]._id)) {
@@ -68,7 +77,7 @@ const OrderInfo: FC = () => {
     let price: number = 0;
 
     if (orderIngs.length > 0) {
-      price = orderIngs.reduce((sum: number, item: TIngredientWithAmount) => sum + item.price * item.amount, 0);
+      price = orderIngs.reduce((sum, item) => sum + item.price * item.amount, 0);
     }
 
     return price;
@@ -108,7 +117,7 @@ const OrderInfo: FC = () => {
           </thead>
           <tbody className={`${styles.table__body} custom-scroll`}>
             {orderIngs &&
-              orderIngs.map((ing: TIngredientWithAmount, i: number) => {
+              orderIngs.map((ing, i) => {
                 return (
                   <tr className={styles.table__row} key={i}>
                     <td className={`${styles.table__td} ${styles.table__image}`}>
