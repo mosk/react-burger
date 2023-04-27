@@ -24,8 +24,6 @@ export const getOrderID = (ingredients: TIngredient[]) => (dispatch: AppDispatch
     type: ORDER_REQUEST,
   });
 
-  console.log(ingredients);
-
   return request(`orders`, {
     method: "POST",
     headers: {

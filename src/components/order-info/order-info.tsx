@@ -18,15 +18,13 @@ const OrderInfo: FC = () => {
   const [orderIngs, setOrderIngs] = useState([] as TIngredientWithAmount[]);
 
   useEffect(() => {
-    console.log(location);
-    if (!wsConnected && location.state === null) {
+    if (location.state === null) {
       if (location.pathname.includes("feed")) {
         dispatch({ type: WS_CONNECTION_START, payload: "/all" });
       } else {
         dispatch({ type: WS_CONNECTION_START });
       }
     }
-
     return () => {
       if (location.state === null) {
         dispatch({ type: WS_CONNECTION_CLOSED });

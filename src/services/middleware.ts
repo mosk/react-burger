@@ -28,7 +28,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
         };
 
         socket.onerror = (event) => {
-          console.log(`error`);
+          console.log(event);
           dispatch({ type: onError, payload: event });
         };
 
@@ -46,7 +46,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
         };
       }
 
-      if (type === onClose && socket) {
+      if (type === onClose && socket?.readyState === 1) {
         socket.close();
       }
 
