@@ -10,10 +10,11 @@ const modalRoot = document.getElementById("modals") as HTMLElement;
 
 interface IModalProps {
   title: string;
+  hideTitle: boolean;
   onClose: () => void;
 }
 
-const Modal: FC<PropsWithChildren<IModalProps>> = ({ title, onClose, children }) => {
+const Modal: FC<PropsWithChildren<IModalProps>> = ({ title, hideTitle, onClose, children }) => {
   const KEY_NAME_ESC = `Escape`;
   const KEY_EVENT_TYPE = `keyup`;
 
@@ -35,7 +36,7 @@ const Modal: FC<PropsWithChildren<IModalProps>> = ({ title, onClose, children })
   return ReactDOM.createPortal(
     <>
       <div className={`${styles.modal}`}>
-        <h2 className={`${styles.title} text text_type_main-large`}>{title}</h2>
+        <h2 className={`${styles.title} text text_type_main-large ${hideTitle && "visually-hidden"}`}>{title}</h2>
         <div className={`${styles.content}`}>{children}</div>
         <button className={`${styles["button--close"]}`} onClick={onClose}>
           <CloseIcon type="primary" />

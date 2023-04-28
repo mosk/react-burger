@@ -1,5 +1,5 @@
 import { useState, useMemo, FC, ReactNode } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { useNavigate } from "react-router-dom";
 import { useDrop } from "react-dnd";
 
@@ -9,23 +9,24 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import Ingredient from "./ingredient/ingredient";
 
-import { addToConstructor, CONSTRUCTOR_RESET } from "../../services/actions/constructor";
-import { ORDER_REQUEST } from "../../services/actions/order";
+import { addToConstructor } from "../../services/actions/constructor";
+import { ORDER_REQUEST } from "../../services/constants/order";
+import { CONSTRUCTOR_RESET } from "../../services/constants/constructor";
 
-import { TStore, TMouseEvent, TIngredient } from "../../types/types";
+import { TMouseEvent, TIngredient } from "../../types/types";
 
 const BurgerConstructor: FC = () => {
   const [modalVisibility, setVisible] = useState<boolean>(false);
-  const { orderFailed } = useSelector((store: TStore) => store.order);
-  const items = useSelector((store: TStore) => store.itemsInConstructor);
-  const { isAuthChecked } = useSelector((store: TStore) => store.auth);
+  const { orderFailed } = useSelector((store) => store.order);
+  const items = useSelector((store) => store.itemsInConstructor);
+  const { isAuthChecked } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: ["bun", "main", "sauce"],
     drop: (item) => {
-      dispatch(addToConstructor(item));
+      dispatch(addToConstructor(item as TIngredient));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -66,14 +67,11 @@ const BurgerConstructor: FC = () => {
   };
 
   const getPrice = useMemo((): number => {
-    return (
-      (items.bun ? items.bun.price * 2 : 0) +
-      items.ingredients.reduce((sum: number, item: TIngredient) => sum + item.price, 0)
-    );
+    return (items.bun ? items.bun.price * 2 : 0) + items.ingredients.reduce((sum, item) => sum + item.price, 0);
   }, [items]);
 
   const getIngredients = (): ReactNode => {
-    const res = items.ingredients.map((item: TIngredient, i: number) => <Ingredient ingredient={item} key={item.id} />);
+    const res = items.ingredients.map((item, i) => <Ingredient ingredient={item} key={item.id} />);
 
     return res;
   };
@@ -141,7 +139,7 @@ const BurgerConstructor: FC = () => {
           Оформить заказ
         </Button>
         {modalVisibility && (
-          <Modal onClose={handleCloseModal} title="">
+          <Modal onClose={handleCloseModal} title="Информация о заказе" hideTitle={true}>
             <OrderDetails />
           </Modal>
         )}

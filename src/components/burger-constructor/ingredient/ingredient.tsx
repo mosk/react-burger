@@ -1,12 +1,9 @@
 import { FC, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../../utils/hooks";
 import { useDrag, useDrop } from "react-dnd";
-
 import styles from "./ingredient.module.css";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-
-import { CONSTRUCTOR_DELETE, CONSTRUCTOR_REORDER } from "../../../services/actions/constructor";
-
+import { CONSTRUCTOR_DELETE, CONSTRUCTOR_REORDER } from "../../../services/constants/constructor";
 import { TIngredient } from "../../../types/types";
 
 interface IIngredientProps {
@@ -47,8 +44,8 @@ const Ingredient: FC<IIngredientProps> = ({ ingredient }) => {
         return;
       }
 
-      const dragId: string | unknown = item.id;
-      const hoverId: string | unknown = id;
+      const dragId: string = item.id;
+      const hoverId: string = id as string;
 
       if (dragId === hoverId) {
         return;

@@ -1,0 +1,25 @@
+.list {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	max-height: 320px;
+	margin: 0;
+	padding: 0;
+}
+
+.list__item {
+	width: 25%;
+	padding: 0;
+	margin-right: 16px;
+	list-style-type: none;
+}
+
+.list__item:not(:nth-child(10n)) {
+	margin-bottom: 8px;
+}
+
+.orders--ready,
+.orders--in-work {
+	width: 100%;
+	max-width: 206px;
+}

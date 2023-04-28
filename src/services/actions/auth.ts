@@ -1,12 +1,42 @@
+import { AppDispatch, TUserRegData, TUserData } from "../../types/types";
 import { request } from "../../utils/burger-api";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookie";
+import { AUTH_REQUEST, AUTH_REGISTER, AUTH_LOGIN, AUTH_FAILED, AUTH_CHECKED, AUTH_LOGOUT } from "../constants/auth";
 
-export const AUTH_REQUEST = "AUTH_REQUEST";
-export const AUTH_REGISTER = "AUTH_REGISTER";
-export const AUTH_LOGIN = "AUTH_LOGIN";
-export const AUTH_LOGOUT = "AUTH_LOGOUT";
-export const AUTH_FAILED = "AUTH_FAILED";
-export const AUTH_CHECKED = "AUTH_CHECKED";
+export interface IAuthRequestAction {
+  readonly type: typeof AUTH_REQUEST;
+}
+
+export interface IAuthRegisterAction {
+  readonly type: typeof AUTH_REGISTER;
+  readonly payload: TUserRegData;
+}
+
+export interface IAuthLoginAction {
+  readonly type: typeof AUTH_LOGIN;
+  readonly payload: TUserRegData;
+}
+
+export interface IAuthFailedAction {
+  readonly type: typeof AUTH_FAILED;
+  readonly payload: string;
+}
+
+export interface IAuthCheckedAction {
+  readonly type: typeof AUTH_CHECKED;
+}
+
+export interface IAuthLogoutAction {
+  readonly type: typeof AUTH_LOGOUT;
+}
+
+export type TAuthActions =
+  | IAuthRequestAction
+  | IAuthRegisterAction
+  | IAuthLoginAction
+  | IAuthFailedAction
+  | IAuthCheckedAction
+  | IAuthLogoutAction;
 
 const registerPath = "auth/register";
 const loginPath = "auth/login";
@@ -18,7 +48,7 @@ const passwordChangePath = "password-reset/reset";
 
 const accessTokenExpiresTime = 1200; // in seconds
 
-export const registerRequest = (form) => (dispatch) => {
+export const registerRequest = (form: TUserData) => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });
@@ -55,7 +85,7 @@ export const registerRequest = (form) => (dispatch) => {
     });
 };
 
-export const loginRequest = (form) => (dispatch) => {
+export const loginRequest = (form: TUserData) => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });
@@ -91,7 +121,7 @@ export const loginRequest = (form) => (dispatch) => {
     });
 };
 
-export const authRequest = () => (dispatch) => {
+export const authRequest = () => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });
@@ -119,7 +149,7 @@ export const authRequest = () => (dispatch) => {
     });
 };
 
-export const refreshUserRequest = (form) => (dispatch) => {
+export const refreshUserRequest = (form: TUserData) => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });
@@ -153,7 +183,7 @@ export const refreshUserRequest = (form) => (dispatch) => {
     });
 };
 
-export const logoutRequest = () => (dispatch) => {
+export const logoutRequest = () => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });
@@ -181,7 +211,7 @@ export const logoutRequest = () => (dispatch) => {
     });
 };
 
-export const passwordResetRequest = (form) => (dispatch) => {
+export const passwordResetRequest = (form: TUserData) => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });
@@ -201,7 +231,7 @@ export const passwordResetRequest = (form) => (dispatch) => {
   });
 };
 
-export const passwordChangeRequest = (form) => (dispatch) => {
+export const passwordChangeRequest = (form: TUserData) => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });
@@ -222,7 +252,7 @@ export const passwordChangeRequest = (form) => (dispatch) => {
   });
 };
 
-export const checkAuth = () => (dispatch) => {
+export const checkAuth = () => (dispatch: AppDispatch) => {
   if (getCookie("refreshToken")) {
     dispatch(authRequest()).finally(() => {
       dispatch({ type: AUTH_CHECKED });
@@ -230,7 +260,7 @@ export const checkAuth = () => (dispatch) => {
   }
 };
 
-const refreshToken = (afterRefresh) => (dispatch) => {
+const refreshToken = (afterRefresh: any) => (dispatch: AppDispatch) => {
   dispatch({
     type: AUTH_REQUEST,
   });

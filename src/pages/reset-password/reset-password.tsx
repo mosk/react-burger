@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
@@ -22,7 +22,7 @@ export const ResetPassword: FC = () => {
 
   const onSubmitHandler = (e: TFormEvent) => {
     e.preventDefault();
-    dispatch(passwordChangeRequest(values) as any).then(() => navigate("/"));
+    dispatch(passwordChangeRequest(values)).then(() => navigate("/"));
   };
 
   return (

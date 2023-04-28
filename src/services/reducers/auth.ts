@@ -1,6 +1,8 @@
-import { AUTH_REQUEST, AUTH_LOGIN, AUTH_REGISTER, AUTH_LOGOUT, AUTH_FAILED, AUTH_CHECKED } from "../actions/auth";
+import { TAuthState } from "../../types/types";
+import { TAuthActions } from "../actions/auth";
+import { AUTH_REQUEST, AUTH_LOGIN, AUTH_REGISTER, AUTH_LOGOUT, AUTH_FAILED, AUTH_CHECKED } from "../constants/auth";
 
-const initialState = {
+const authInitialState: TAuthState = {
   request: false,
   email: "",
   name: "",
@@ -9,7 +11,7 @@ const initialState = {
   isAuthChecked: false,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state: TAuthState = authInitialState, action: TAuthActions): TAuthState => {
   switch (action.type) {
     case AUTH_REQUEST: {
       return {

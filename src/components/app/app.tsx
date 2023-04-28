@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 import ErrorBoundary from "../../utils/error-boundary";
@@ -10,6 +10,7 @@ import styles from "./app.module.css";
 
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../burger-ingredients/ingredient/ingredient-details/ingredient-details";
+import OrderInfo from "../order-info/order-info";
 import Modal from "../modal/modal";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import {
@@ -22,9 +23,12 @@ import {
   Orders,
   Home,
   Ingredient,
+  Order,
+  Feed,
 } from "../../pages";
 
 import { getItems } from "../../services/actions/ingredients";
+import { ROUTES_LIST } from "../../utils/routes";
 
 const App = () => {
   const ModalSwitch = () => {
@@ -39,19 +43,20 @@ const App = () => {
     };
 
     useEffect(() => {
-      dispatch(checkAuth() as any);
-      dispatch(getItems() as any);
+      dispatch(checkAuth());
+      dispatch(getItems());
     }, [dispatch]);
 
     return (
       <>
         <AppHeader />
         <Routes location={background || location}>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound404 />} />
-          <Route path="/ingredients/:ingredientId" element={<Ingredient />} />
+          <Route path={ROUTES_LIST.home} element={<Home />} />
+          <Route path={ROUTES_LIST.feed} element={<Feed />} />
+          <Route path={ROUTES_LIST.notFound} element={<NotFound404 />} />
+          <Route path={`${ROUTES_LIST.ingredients}/:ingredientId`} element={<Ingredient />} />
           <Route
-            path="/profile"
+            path={ROUTES_LIST.profile}
             element={
               <ProtectedRoute onlyUnAuth={false}>
                 <Profile />
@@ -59,7 +64,7 @@ const App = () => {
             }
           />
           <Route
-            path="/profile/orders"
+            path={`${ROUTES_LIST.profile}${ROUTES_LIST.orders}`}
             element={
               <ProtectedRoute onlyUnAuth={false}>
                 <Orders />
@@ -67,7 +72,16 @@ const App = () => {
             }
           />
           <Route
-            path="/login"
+            path={`${ROUTES_LIST.profile}${ROUTES_LIST.orders}/:orderId`}
+            element={
+              <ProtectedRoute onlyUnAuth={false}>
+                <Order />
+              </ProtectedRoute>
+            }
+          />
+          <Route path={`${ROUTES_LIST.feed}/:orderId`} element={<Order />} />
+          <Route
+            path={ROUTES_LIST.login}
             element={
               <ProtectedRoute onlyUnAuth>
                 <SignIn />
@@ -75,7 +89,7 @@ const App = () => {
             }
           />
           <Route
-            path="/register"
+            path={ROUTES_LIST.register}
             element={
               <ProtectedRoute onlyUnAuth>
                 <Registration />
@@ -83,7 +97,7 @@ const App = () => {
             }
           />
           <Route
-            path="/forgot-password"
+            path={ROUTES_LIST.passwordForgot}
             element={
               <ProtectedRoute onlyUnAuth>
                 <ForgotPassword />
@@ -91,7 +105,7 @@ const App = () => {
             }
           />
           <Route
-            path="/reset-password"
+            path={ROUTES_LIST.passwordReset}
             element={
               <ProtectedRoute onlyUnAuth>
                 <ResetPassword />
@@ -102,10 +116,34 @@ const App = () => {
         {background && (
           <Routes>
             <Route
-              path="/ingredients/:ingredientId"
+              path={`${ROUTES_LIST.ingredients}/:ingredientId`}
               element={
-                <Modal onClose={onCloseHandler} title="Детали ингредиента">
+                <Modal onClose={onCloseHandler} title="Детали ингредиента" hideTitle={false}>
                   <IngredientDetails />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {background && (
+          <Routes>
+            <Route
+              path={`${ROUTES_LIST.profile}${ROUTES_LIST.orders}/:orderId`}
+              element={
+                <Modal onClose={onCloseHandler} title="Детали заказа" hideTitle={true}>
+                  <OrderInfo />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {background && (
+          <Routes>
+            <Route
+              path={`${ROUTES_LIST.feed}/:orderId`}
+              element={
+                <Modal onClose={onCloseHandler} title="Детали заказа" hideTitle={true}>
+                  <OrderInfo />
                 </Modal>
               }
             />
