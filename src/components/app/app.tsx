@@ -50,6 +50,7 @@ const App = () => {
     return (
       <>
         <AppHeader />
+
         <Routes location={background || location}>
           <Route path={ROUTES_LIST.home} element={<Home />} />
           <Route path={ROUTES_LIST.feed} element={<Feed />} />
@@ -113,6 +114,7 @@ const App = () => {
             }
           />
         </Routes>
+
         {background && (
           <Routes>
             <Route
@@ -123,10 +125,6 @@ const App = () => {
                 </Modal>
               }
             />
-          </Routes>
-        )}
-        {background && (
-          <Routes>
             <Route
               path={`${ROUTES_LIST.profile}${ROUTES_LIST.orders}/:orderId`}
               element={
@@ -135,10 +133,6 @@ const App = () => {
                 </Modal>
               }
             />
-          </Routes>
-        )}
-        {background && (
-          <Routes>
             <Route
               path={`${ROUTES_LIST.feed}/:orderId`}
               element={

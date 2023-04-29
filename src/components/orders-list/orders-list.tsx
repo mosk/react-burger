@@ -11,18 +11,19 @@ export const OrdersList: FC = () => {
 
   return (
     <ul className={styles.list}>
-      {orders.map((data, i) => (
-        <li className={styles.item} key={i}>
-          <Link
-            to={{ pathname: `${location.pathname}/${data._id}` }}
-            state={{ background: location }}
-            className={styles.item__wrapper}
-            style={{ display: "flex" }}
-          >
-            <Order data={data} />
-          </Link>
-        </li>
-      ))}
+      {orders &&
+        orders.map((data, i) => (
+          <li className={styles.item} key={i}>
+            <Link
+              to={{ pathname: `${location.pathname}/${data._id}` }}
+              state={{ background: location }}
+              className={styles.item__wrapper}
+              style={{ display: "flex" }}
+            >
+              <Order data={data} />
+            </Link>
+          </li>
+        ))}
     </ul>
   );
 };
