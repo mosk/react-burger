@@ -23,17 +23,14 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
 
       if (socket) {
         socket.onopen = (event) => {
-          console.log(`open`);
           dispatch({ type: onOpen, payload: event });
         };
 
         socket.onerror = (event) => {
-          console.log(event);
           dispatch({ type: onError, payload: event });
         };
 
         socket.onmessage = (event) => {
-          console.log(`message`);
           const { data } = event;
           const parsedData: any = JSON.parse(data);
 
@@ -41,7 +38,6 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
         };
 
         socket.onclose = (event) => {
-          console.log(`close`);
           dispatch({ type: onClose, payload: event });
         };
       }

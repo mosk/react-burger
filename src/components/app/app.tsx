@@ -28,7 +28,8 @@ import {
 } from "../../pages";
 
 import { getItems } from "../../services/actions/ingredients";
-import { ROUTES_LIST } from "../../utils/routes";
+
+import { basename, ROUTES_LIST } from "../../utils/routes";
 
 const App = () => {
   const ModalSwitch = () => {

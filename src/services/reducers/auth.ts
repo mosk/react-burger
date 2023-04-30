@@ -2,7 +2,7 @@ import { TAuthState } from "../../types/types";
 import { TAuthActions } from "../actions/auth";
 import { AUTH_REQUEST, AUTH_LOGIN, AUTH_REGISTER, AUTH_LOGOUT, AUTH_FAILED, AUTH_CHECKED } from "../constants/auth";
 
-const authInitialState: TAuthState = {
+export const authInitialState: TAuthState = {
   request: false,
   email: "",
   name: "",

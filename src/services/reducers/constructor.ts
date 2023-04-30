@@ -2,7 +2,7 @@ import { CONSTRUCTOR_ADD, CONSTRUCTOR_DELETE, CONSTRUCTOR_REORDER, CONSTRUCTOR_R
 import { TConstructorActions } from "../actions/constructor";
 import { TConstructorState } from "../../types/types";
 
-const constructorInitialState: TConstructorState = {
+export const constructorInitialState: TConstructorState = {
   ingredients: [],
 };
 
@@ -42,16 +42,14 @@ export const constructorReducer = (
     case CONSTRUCTOR_REORDER: {
       const ingredients = [...state.ingredients];
 
-      const draggedNumber: number | null = ingredients
-        .map((item, i) => (item.id === action.payload.from ? i : null))
-        .filter((item) => item !== null)[0];
-      const hoveredNumber: number | null = ingredients
-        .map((item, i) => (item.id === action.payload.to ? i : null))
-        .filter((item) => item !== null)[0];
+      const draggedNumber: number = ingredients
+        .map((item, i) => (item.id === action.payload.from ? i : -1))
+        .filter((item) => item !== -1)[0];
+      const hoveredNumber: number = ingredients
+        .map((item, i) => (item.id === action.payload.to ? i : -1))
+        .filter((item) => item !== -1)[0];
 
-      if (draggedNumber !== null && hoveredNumber !== null) {
-        ingredients[hoveredNumber] = ingredients.splice(draggedNumber, 1, ingredients[hoveredNumber])[0];
-      }
+      ingredients[hoveredNumber] = ingredients.splice(draggedNumber, 1, ingredients[hoveredNumber])[0];
 
       return {
         ...state,

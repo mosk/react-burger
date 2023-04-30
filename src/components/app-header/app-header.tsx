@@ -15,9 +15,9 @@ const AppHeader: FC = () => {
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
-      <a href={ROUTES_LIST.home} className={styles.logo}>
+      <NavLink to={ROUTES_LIST.home} className={styles.logo}>
         <Logo />
-      </a>
+      </NavLink>
       <nav className={styles.nav}>
         <NavLink
           to={ROUTES_LIST.home}

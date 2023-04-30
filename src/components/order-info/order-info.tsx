@@ -24,15 +24,18 @@ const OrderInfo: FC = () => {
   };
 
   useEffect(() => {
-    if (location.state === null) {
-      if (location.pathname.includes("feed")) {
-        dispatch({ type: WS_CONNECTION_START, payload: "/all" });
-      } else {
-        dispatch({ type: WS_CONNECTION_START });
+    if (!wsConnected) {
+      if (location.state === null) {
+        if (location.pathname.includes("feed")) {
+          dispatch({ type: WS_CONNECTION_START, payload: "/all" });
+        } else {
+          dispatch({ type: WS_CONNECTION_START });
+        }
       }
     }
+
     return () => {
-      if (location.state === null) {
+      if (location.state === null && wsConnected) {
         dispatch({ type: WS_CONNECTION_CLOSED });
       }
     };
@@ -66,7 +69,7 @@ const OrderInfo: FC = () => {
               if (ingsIDs.includes(res[0]._id)) {
                 let currentIngIndex = ingsIDs.indexOf(res[0]._id);
 
-                ings[currentIngIndex].amount += ings[currentIngIndex].amount;
+                ings[currentIngIndex].amount += 1;
               } else {
                 ingsIDs.push(res[0]._id);
                 ings.push({ ...res[0], amount: 1 });
