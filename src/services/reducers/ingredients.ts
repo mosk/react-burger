@@ -2,7 +2,7 @@ import { TIngredientsState } from "../../types/types";
 import { TGetIngredientsActions } from "../actions/ingredients";
 import { INGREDIENTS_REQUEST, INGREDIENTS_SUCCESS, INGREDIENTS_FAILED } from "../constants/ingredients";
 
-const ingredientsInitialState: TIngredientsState = {
+export const ingredientsInitialState: TIngredientsState = {
   items: [],
   itemsRequest: false,
   itemsFailed: false,

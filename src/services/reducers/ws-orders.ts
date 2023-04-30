@@ -8,14 +8,14 @@ import {
 
 import { TWSActions } from "../actions/ws-orders";
 
-const initialState: TWSState = {
+export const wsInitialState: TWSState = {
   wsConnected: false,
   orders: [],
   total: "",
   totalToday: "",
 };
 
-export const wsReducer = (state = initialState, action: TWSActions): TWSState => {
+export const wsReducer = (state = wsInitialState, action: TWSActions): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

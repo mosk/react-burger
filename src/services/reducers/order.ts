@@ -2,7 +2,7 @@ import { ORDER_REQUEST, ORDER_SUCCESS, ORDER_FAILED } from "../constants/order";
 import { TOrderActions } from "../actions/order";
 import { TOrderState } from "../../types/types";
 
-const orderInitialState: TOrderState = {
+export const orderInitialState: TOrderState = {
   orderID: "",
   orderRequest: false,
   orderFailed: false,

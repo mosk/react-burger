@@ -17,16 +17,25 @@ const OrderInfo: FC = () => {
   const [order, setOrder] = useState({} as TOrderData);
   const [orderIngs, setOrderIngs] = useState([] as TIngredientWithAmount[]);
 
+  const removeBadIngs = (array: TIngredient[]) => {
+    const goodIngs = array.filter((ing) => ing !== undefined);
+
+    return goodIngs;
+  };
+
   useEffect(() => {
-    if (location.state === null) {
-      if (location.pathname.includes("feed")) {
-        dispatch({ type: WS_CONNECTION_START, payload: "/all" });
-      } else {
-        dispatch({ type: WS_CONNECTION_START });
+    if (!wsConnected) {
+      if (location.state === null) {
+        if (location.pathname.includes("feed")) {
+          dispatch({ type: WS_CONNECTION_START, payload: "/all" });
+        } else {
+          dispatch({ type: WS_CONNECTION_START });
+        }
       }
     }
+
     return () => {
-      if (location.state === null) {
+      if (location.state === null && wsConnected) {
         dispatch({ type: WS_CONNECTION_CLOSED });
       }
     };
@@ -48,19 +57,24 @@ const OrderInfo: FC = () => {
   useEffect(() => {
     if (items.length > 0 && order.ingredients) {
       const getOrderIngs = () => {
+        const cleanIngs = removeBadIngs(items);
         let ings: TIngredientWithAmount[] = [];
         let ingsIDs: string[] = [];
 
         order.ingredients.forEach((id, i) => {
-          const res = items.filter((item) => item._id === id);
+          if (id !== undefined) {
+            let res = cleanIngs.filter((item) => item._id === id);
 
-          if (ingsIDs.includes(res[0]._id)) {
-            let currentIngIndex = ingsIDs.indexOf(res[0]._id);
+            if (res[0] !== undefined) {
+              if (ingsIDs.includes(res[0]._id)) {
+                let currentIngIndex = ingsIDs.indexOf(res[0]._id);
 
-            ings[currentIngIndex].amount += ings[currentIngIndex].amount;
-          } else {
-            ingsIDs.push(res[0]._id);
-            ings.push({ ...res[0], amount: 1 });
+                ings[currentIngIndex].amount += 1;
+              } else {
+                ingsIDs.push(res[0]._id);
+                ings.push({ ...res[0], amount: 1 });
+              }
+            }
           }
         });
 
